@@ -1,0 +1,142 @@
+// 背景色
+$bg-color: #F5F5F5;
+
+// 主题色 深
+$primary-color: #C10D0C;
+
+// 主题色 浅
+$light-primary-color: #C20C0C;
+
+// 背景图标
+%background-index {
+  background: url(~assets/images/index.png) no-repeat 0 9999px;
+}
+
+%background-cover {
+  background: url(~assets/images/coverall.png) no-repeat;
+}
+
+%background-icon-all {
+  background: url(~assets/images/iconall.png) no-repeat;
+}
+
+%background-icon {
+  background: url(~assets/images/icon.png) no-repeat 0 9999px;
+}
+
+%background-icon2 {
+  background: url(~assets/images/icon2.png) no-repeat 0 9999px;
+}
+
+%background-playlist {
+  background: url(~assets/images/playlist.png) no-repeat 0 9999px;
+}
+
+%background-playbar {
+  background: url(~assets/images/playbar.png) no-repeat 0 9999px;
+}
+
+%background-button {
+  background: url(~assets/images/button.png) no-repeat 0 9999px;
+}
+
+%background-button2 {
+  background: url(~assets/images/button2.png) no-repeat 0 9999px;
+}
+
+%background-table {
+  background: url(~assets/images/table.png) no-repeat 0 9999px;
+}
+
+%mask {
+  background: url(~assets/images/mask.png) no-repeat 0 9999px;
+}
+
+// 单行省略
+%text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+
+// break-word
+%break-word {
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+}
+
+%button {
+  display: inline-block;
+  height: 31px;
+  line-height: 31px;
+  padding: 0 5px 0 0;
+  overflow: hidden;
+  vertical-align: top;
+  text-align: center;
+  cursor: pointer;
+  @extend %background-button2;
+}
+
+%button-i {
+  @extend %button;
+  white-space: nowrap;
+  font-style: normal;
+}
+
+%white-button {
+  @extend %button;
+  background-position: right -100px;
+
+  &:hover {
+    background-position: right -182px;
+
+    i {
+      background-position: 0 -141px;
+    }
+  }
+}
+
+%white-button-i {
+  @extend %button;
+  padding: 0 15px 0 20px;
+  font-style: normal;
+  background-position: 0 -59px;
+}
+
+%u-button {
+  float: left;
+  height: 31px;
+  line-height: 30px;
+  min-width: 23px;
+  cursor: pointer;
+  @extend %background-button2;
+}
+
+%u-button-i {
+  @extend %u-button;
+  padding: 0 5px 0 0;
+  white-space: nowrap;
+  font-style: normal;
+}
+
+%title {
+  position: relative;
+  height: 34px;
+  border-bottom: 2px solid #c20c0c;
+}
+
+%title-h3 {
+  float: left;
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 28px;
+}
+
+%title-underline-h3 {
+  height: 23px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+  color: #333;
+}
