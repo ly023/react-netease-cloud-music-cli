@@ -5,6 +5,9 @@ export default {
         url: `${config.apiHost}/api/album/newest`,
         type: 'GET'
     },
+    allNew: {
+        url: `${config.apiHost}/api/album/new`
+    },
     detail: {
         url: `${config.apiHost}/api/album`,
         type: 'GET'

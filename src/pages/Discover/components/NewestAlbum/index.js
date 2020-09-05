@@ -1,94 +1,75 @@
 /**
  * 新碟上架
  */
-import React, {useState, useEffect} from 'react'
-import Swiper from 'swiper'
+import React, {useState, useEffect, useMemo, useRef} from 'react'
+import {Link} from 'react-router-dom'
+import Slider from 'react-slick'
 import {PLAY_TYPE} from 'constants/play'
 import Play from 'components/Play'
 import {requestNewestAlbum} from 'services/album'
+import {getThumbnail} from 'utils'
 
-import 'swiper/dist/css/swiper.css'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 import './index.scss'
 
-let isMounted = false
-let swiper
-let containerRef = React.createRef()
+const TOTAL_LENGTH = 10 // 总专辑数
+const SLIDES_PER_ROW = 5 // 每行显示专辑数
 
 function NewestAlbum() {
-    const [newestAlbum, setNewestAlbum] = useState([])
+    const [newestAlbums, setNewestAlbum] = useState([])
+    const isMounted = useRef()
 
     useEffect(() => {
-        const destroySwiper = () => {
-            if (swiper) {
-                swiper.destroy()
-            }
-        }
-
         const fetchNewestAlbum = async () => {
             const res = await requestNewestAlbum()
-            if(isMounted) {
-                setNewestAlbum(Array.isArray(res.albums) ? res.albums.slice(0, 10) : [])
+            if(isMounted.current) {
+                setNewestAlbum(Array.isArray(res.albums) ? res.albums.slice(0, TOTAL_LENGTH) : [])
             }
         }
 
-        isMounted = true
+        isMounted.current = true
         fetchNewestAlbum()
 
         return () => {
-            isMounted = false
-            destroySwiper()
+            isMounted.current = false
         }
     }, [])
 
-    useEffect(() => {
-        const initSwiper = () => {
-            const container = containerRef.current
-            if(container) {
-                swiper = new Swiper(container, {
-                    slidesPerView: 5,
-                    slidesPerGroup: 5,
-                    loop: true,
-                    spaceBetween: 10,
-                    speed: 1000,
-                    prevButton: '#roller-prev',
-                    nextButton: '#roller-next',
-                    // navigation: {
-                    //     nextEl: '#roller-next',
-                    //     prevEl: '#roller-prev',
-                    // },
-                })
-            }
-        }
-        initSwiper()
-    }, [newestAlbum])
+    const settings = useMemo(() => ({
+        dots: false,
+        slidesPerRow: SLIDES_PER_ROW,
+    }), [])
 
     return <div styleName="wrapper">
-        <div styleName="list-wrapper">
-            <div className="swiper-container" ref={containerRef}>
-                <div className="swiper-wrapper" styleName="list">
-                    {
-                        newestAlbum.map((item, index) => {
-                            return <div key={index} className="swiper-slide" styleName='item'>
-                                <div styleName='cover'>
-                                    <img
-                                        src={item.picUrl}
-                                        alt={item.name}
-                                    />
-                                    <a styleName='mask'/>
-                                    <Play id={item.id} type={PLAY_TYPE.ALBUM.TYPE}>
-                                        <a styleName='play-icon'/>
+        {
+            newestAlbums.length ? <Slider {...settings} styleName="list">
+                {
+                    newestAlbums.map((item, index) => {
+                        const {id, name, artist} = item
+                        const albumLink = `/album/${id}`
+                        return <div key={index}>
+                            <div styleName="item">
+                                <div styleName="cover">
+                                    <Link to={albumLink}>
+                                        <img
+                                            src={getThumbnail(item.picUrl, 100)}
+                                            alt={name}
+                                        />
+                                        <span styleName="mask"/>
+                                    </Link>
+                                    <Play id={id} type={PLAY_TYPE.ALBUM.TYPE}>
+                                        <span styleName="play-icon"/>
                                     </Play>
                                 </div>
-                                <a styleName='title'>{item.name}</a>
-                                <a styleName='name'>{item.artist && item.artist.name}</a>
+                                <Link to={albumLink} styleName="title">{name}</Link>
+                                <Link to="/" styleName="name">{artist && artist.name}</Link>
                             </div>
-                        })
-                    }
-                </div>
-            </div>
-        </div>
-        <div styleName="prev" id="roller-prev"/>
-        <div styleName="next" id="roller-next"/>
+                        </div>
+                    })
+                }
+            </Slider> : null
+        }
     </div>
 }
 

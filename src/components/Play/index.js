@@ -11,6 +11,7 @@ import {setUserPlayer} from 'actions/user'
 import {requestDetail as requestPlaylistDetail} from 'services/playlist'
 import {requestDetail as requestSongDetail} from 'services/song'
 import {requestDetail as requestAlbumDetail} from 'services/album'
+import {requestDetail as requestRadioDetail} from 'services/radio'
 import useShallowEqualSelector from 'utils/useShallowEqualSelector'
 import {hasPrivilege, isShuffleMode, formatTrack} from 'utils/song'
 
@@ -36,13 +37,14 @@ function Play(props) {
      */
     const handlePlay = async (e) => {
         e.stopPropagation()
-        const {type, id} = props
+        const {type, id, songs} = props
         const playSetting = selectedState.playSetting || {}
         const localTrackQueue = selectedState.trackQueue || []
         let trackQueue = []
         let index = 0
         let hasChangeTrackQueue = true
         let emitPlay = true
+        // 单曲
         if (type === PLAY_TYPE.SINGLE.TYPE) {
             const trackIndex = localTrackQueue.findIndex((v) => v.id === id)
             if (trackIndex !== -1) {
@@ -71,17 +73,49 @@ function Play(props) {
                     emitPlay = false
                 }
             }
+        // 电台节目
+        } else if(type === PLAY_TYPE.PROGRAM.TYPE) {
+            const trackIndex = localTrackQueue.findIndex((v) => v.id === id)
+            if (trackIndex !== -1) {
+                trackQueue = localTrackQueue
+                index = trackIndex
+            } else {
+                const res = await requestRadioDetail({id})
+                const track = formatTrack(res?.program, true)
+                trackQueue = localTrackQueue.concat([track])
+                index = trackQueue.length - 1
+                // 随机模式重新计算shuffle
+                if (isShuffleMode(playSetting)) {
+                    const {shuffle} = selectedState
+                    const shuffleIndex = shuffle.findIndex((v) => v === index)
+                    let newShuffle = [...shuffle]
+                    if (shuffleIndex === -1) {
+                        newShuffle = _.shuffle(shuffle.concat([index]))
+                    }
+                    dispatch(setUserPlayer({shuffle: newShuffle}))
+                }
+            }
         } else {
+            // 歌单、专辑
             let newTrackQueue = []
             if (type === PLAY_TYPE.PLAYLIST.TYPE) {
-                const res = await requestPlaylistDetail({id})
-                const tracks = res?.playlist?.tracks || []
-                const privileges = res?.privileges || []
-                for (let i = 0; i < tracks.length; i++) {
-                    const item = tracks[i]
-                    const privilege = privileges[i]
-                    if (hasPrivilege(privilege)) {
-                        newTrackQueue.push(formatTrack(item))
+                if (id && !Number.isNaN(id)) {
+                    const res = await requestPlaylistDetail({id})
+                    const tracks = res?.playlist?.tracks || []
+                    const privileges = res?.privileges || []
+                    for (let i = 0; i < tracks.length; i++) {
+                        const item = tracks[i]
+                        const privilege = privileges[i]
+                        if (hasPrivilege(privilege)) {
+                            newTrackQueue.push(formatTrack(item))
+                        }
+                    }
+                } else if (songs.length) {
+                    for (let i = 0; i < songs.length; i++) {
+                        const item = songs[i]
+                        if (hasPrivilege(item.privilege)) {
+                            newTrackQueue.push(formatTrack(item))
+                        }
                     }
                 }
             } else if (type === PLAY_TYPE.ALBUM.TYPE) {
@@ -130,13 +164,17 @@ function Play(props) {
     )
 }
 
+const types = Object.keys(PLAY_TYPE).map((key)=> PLAY_TYPE[key].TYPE)
+
 Play.propTypes = {
-    type: PropTypes.oneOf([PLAY_TYPE.SINGLE.TYPE, PLAY_TYPE.PLAYLIST.TYPE, PLAY_TYPE.ALBUM.TYPE]).isRequired,
-    id: PropTypes.number.isRequired,
+    type: PropTypes.oneOf(types).isRequired,
+    id: PropTypes.number,
+    songs: PropTypes.array,
 }
 
 Play.defaultProps = {
     type: PLAY_TYPE.SINGLE.TYPE,
+    songs: [],
 }
 
-export default Play
+export default React.memo(Play)

@@ -4,8 +4,16 @@
 import config from 'config'
 
 export default {
+    category: {
+        url: `${config.apiHost}/api/playlist/catlist`,
+        type: 'GET'
+    },
     hotCategory:{
         url: `${config.apiHost}/api/playlist/hot`,
+        type: 'GET'
+    },
+    top: {
+        url: `${config.apiHost}/api/top/playlist`,
         type: 'GET'
     },
     personalized: {
@@ -18,6 +26,23 @@ export default {
     },
     similar: {
         url: `${config.apiHost}/api/simi/playlist`,
+        type: 'GET'
+    },
+    related :{
+        url: `${config.apiHost}/api/related/playlist`,
+        type: 'GET'
+    },
+    subscribe: {
+        url: `${config.apiHost}/api/playlist/subscribe`,
+        // type: 'POST'
+        type: 'GET'
+    },
+    userPlaylist: {
+        url: `${config.apiHost}/api/user/playlist`,
+        type: 'GET'
+    },
+    updateUserPlaylist: {
+        url: `${config.apiHost}/api/playlist/update`,
         type: 'GET'
     }
 }

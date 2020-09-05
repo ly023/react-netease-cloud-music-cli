@@ -1,10 +1,12 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {withRouter, NavLink, Link} from 'react-router-dom'
+import emitter from 'utils/eventEmitter'
 import {LOGIN_MODE} from 'constants/login'
 import LoginModal from 'components/LoginModal'
-import emitter from 'utils/eventEmitter'
+import {setNavHeight} from 'actions/base'
 import {requestLogout} from 'services/user'
+import {getThumbnail} from 'utils'
 import SearchBar from './components/SearchBar'
 
 import styles from './index.scss'
@@ -44,6 +46,7 @@ export default class NavBar extends React.Component {
             this.setState({
                 style: {height: navHeight}
             })
+            this.props.dispatch(setNavHeight({navHeight}))
         }
     }
 
@@ -69,10 +72,16 @@ export default class NavBar extends React.Component {
             })
     }
 
-    getRenderSubNav = () => {
-        const pathname = this.props.history.location.pathname
+    hasSubNav = () => {
+        const {pathname} = this.props.history.location
+        return pathname.startsWith('/discover')
+            || pathname.startsWith('/song')
+            || pathname.startsWith('/playlist')
+            || pathname.startsWith('/album')
+    }
 
-        if (pathname.startsWith('/discover') || pathname.startsWith('/song')) {
+    getRenderSubNav = () => {
+        if (this.hasSubNav()) {
             return <ul styleName="sub-nav-list">
                 <li styleName="sub-nav-item">
                     <NavLink to="/discover" exact={true} activeClassName={styles["sub-nav-active"]}><em>推荐</em></NavLink>
@@ -81,16 +90,16 @@ export default class NavBar extends React.Component {
                     <NavLink to="/discover/toplist" activeClassName={styles["sub-nav-active"]}><em>排行榜</em></NavLink>
                 </li>
                 <li styleName="sub-nav-item">
-                    <NavLink to="/discover/2" activeClassName={styles["sub-nav-active"]}><em>歌单<i/></em></NavLink>
+                    <NavLink to="/discover/playlist" activeClassName={styles["sub-nav-active"]}><em>歌单<i/></em></NavLink>
                 </li>
                 <li styleName="sub-nav-item">
-                    <NavLink to="/discover/3" activeClassName={styles["sub-nav-active"]}><em>主播电台</em></NavLink>
+                    <NavLink to="/discover/radio" activeClassName={styles["sub-nav-active"]}><em>主播电台</em></NavLink>
                 </li>
                 <li styleName="sub-nav-item">
                     <NavLink to="/discover/4" activeClassName={styles["sub-nav-active"]}><em>歌手</em></NavLink>
                 </li>
                 <li styleName="sub-nav-item">
-                    <NavLink to="/discover/5" activeClassName={styles["sub-nav-active"]}><em>新碟上架</em></NavLink>
+                    <NavLink to="/discover/album" activeClassName={styles["sub-nav-active"]}><em>新碟上架</em></NavLink>
                 </li>
             </ul>
         }
@@ -148,7 +157,7 @@ export default class NavBar extends React.Component {
                                 isLogin
                                     ? <div styleName="login">
                                         <div styleName="login-status avatar">
-                                            <img src={userInfo?.avatarUrl} alt="头像"/>
+                                            <img src={getThumbnail(userInfo?.avatarUrl, 30)} alt="头像"/>
                                             {unreadCount ? <i styleName="login-badge">{unreadCount}</i> : null}
                                         </div>
                                         <div styleName="login-cont">

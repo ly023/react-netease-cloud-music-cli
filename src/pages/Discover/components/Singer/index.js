@@ -1,28 +1,28 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {Link} from 'react-router-dom'
 import {requestArtist} from 'services/artist'
 
 import './index.scss'
-
-let isMounted = false
+import {getThumbnail} from "utils/index";
 
 function Singer() {
     const [artists, setArtists] = useState([])
+    const isMounted = useRef()
 
     useEffect(() => {
         const fetchArtist = async () => {
             const params = {limit: 5, cat: 5001} // 5001：入驻歌手
             const res = await requestArtist(params)
-            if (isMounted) {
+            if (isMounted.current) {
                 setArtists(res.artists)
             }
         }
 
-        isMounted = true
+        isMounted.current = true
         fetchArtist()
 
         return () => {
-            isMounted = false
+            isMounted.current = false
         }
     }, [])
 
@@ -34,9 +34,9 @@ function Singer() {
         <ul styleName="list">
             {
                 artists.map((item) => {
-                    return <li key={item.accountId} styleName="item">
+                    return <li key={item.id} styleName="item">
                         <Link to={`/user/home/${item.accountId}`}>
-                            <img src={item.picUrl} styleName="item-avatar" alt="头像"/>
+                            <img src={getThumbnail(item.picUrl, 62)} styleName="item-avatar" alt="头像"/>
                             <div styleName="item-info">
                                 <h4 styleName="item-nickname">{item.name}{item.alias?.[0]}</h4>
                                 <p styleName="item-desc">暂无描述</p>

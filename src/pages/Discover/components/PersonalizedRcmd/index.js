@@ -1,39 +1,38 @@
 /**
  * 个性化推荐
  */
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {useSelector} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {PLAY_TYPE} from 'constants/play'
 import Play from 'components/Play'
 import {requestRcmdPlaylist} from 'services/rcmd'
-import {formatNumber} from 'utils'
+import {formatNumber, getThumbnail} from 'utils'
 
 import './index.scss'
 
-const Weekday = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
-
-let isMounted = false
+const WEEKDAY = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
 
 function PersonalizedRcmd() {
     const isLogin = useSelector(({user}) => user.isLogin)
     const [playlist, setPlaylist] = useState([])
+    const isMounted = useRef()
 
     useEffect(() => {
         const fetchRcmdPlaylist = async () => {
             const res = await requestRcmdPlaylist()
-            if(isMounted) {
+            if(isMounted.current) {
                 setPlaylist(res.recommend.splice(0, 3))
             }
         }
 
-        isMounted = true
+        isMounted.current = true
         if(isLogin) {
             fetchRcmdPlaylist()
         }
 
         return () => {
-            isMounted = false
+            isMounted.current = false
         }
     }, [isLogin])
 
@@ -44,7 +43,7 @@ function PersonalizedRcmd() {
     return <ul styleName="list">
         <li styleName="item">
             <Link to="discover/recommend/daily" styleName="item-date" title="每日歌曲推荐">
-                <p styleName="day">{Weekday[new Date().getDay() - 1]}</p>
+                <p styleName="day">{WEEKDAY[new Date().getDay() - 1]}</p>
                 <p styleName="date">{new Date().getDate()}</p>
                 <div styleName="date-mask"/>
             </Link>
@@ -60,7 +59,7 @@ function PersonalizedRcmd() {
             playlist.map((item)=>{
                 return <li key={item.id} styleName="item">
                     <div styleName="cover">
-                        <img src={item.picUrl} alt=""/>
+                        <img src={getThumbnail(item.picUrl, 140)} alt=""/>
                         <Link to={`/playlist/${item.id}`} title={item.name} styleName="mask"/>
                         <div styleName="bottom">
                             <Play type={PLAY_TYPE.PLAYLIST.TYPE} id={item.id}>

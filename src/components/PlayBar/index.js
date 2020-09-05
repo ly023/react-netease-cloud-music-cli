@@ -56,7 +56,8 @@ export default class PlayBar extends React.PureComponent {
             volumeLength: 0,
             volumeDotStyle: {},
 
-            addedTipVisible: false
+            playedTipVisible: false,
+            addedTipVisible: false,
         }
 
         this.progressRef = React.createRef()
@@ -91,6 +92,7 @@ export default class PlayBar extends React.PureComponent {
 
         emitter.on('play', this.emitterOnPlay)
         emitter.on('add', this.emitterOnAdd)
+        emitter.on('close', this.emitterOnClose)
 
         this.progressWidth = this.progressRef.current.offsetWidth
     }
@@ -102,6 +104,8 @@ export default class PlayBar extends React.PureComponent {
         window.clearTimeout(this.timeoutId)
         window.clearInterval(this.songPlayedIntervalId)
         emitter.removeListener('play', this.emitterOnPlay)
+        emitter.removeListener('add', this.emitterOnAdd)
+        emitter.removeListener('close', this.emitterOnClose)
     }
 
     handleDocumentClick = (e) => {
@@ -166,16 +170,32 @@ export default class PlayBar extends React.PureComponent {
             this.autoPlay = true
         }
         this.play(trackQueue, index, hasChangeTrackQueue)
+
+        // 播放提示
+        if(trackQueue.length) {
+            this.setState({playedTipVisible: true, addedTipVisible: false})
+            if (this.tipTimeout) {
+                window.clearTimeout(this.tipTimeout)
+            }
+            this.tipTimeout = setTimeout(() => {
+                this.setState({playedTipVisible: false})
+            }, TIP_TIMEOUT)
+        }
     }
 
     emitterOnAdd = () => {
-        this.setState({addedTipVisible: true})
+        // 添加到播放列表提示
+        this.setState({playedTipVisible: false, addedTipVisible: true})
         if (this.tipTimeout) {
             window.clearTimeout(this.tipTimeout)
         }
         this.tipTimeout = setTimeout(() => {
             this.setState({addedTipVisible: false})
         }, TIP_TIMEOUT)
+    }
+
+    emitterOnClose = () => {
+        this.closePanel()
     }
 
     play = (trackQueue, index, hasChangeTrackQueue) => {
@@ -195,6 +215,7 @@ export default class PlayBar extends React.PureComponent {
             playSetting,
             isPlaying: false,
             currentPlayedTime: 0,
+            currentSong: trackQueue[index]
         }))
         this.setState({
             readyPercent: 0,
@@ -761,10 +782,12 @@ export default class PlayBar extends React.PureComponent {
             volumeVisible,
             volumeLength,
             volumeDotStyle,
+            playedTipVisible,
             addedTipVisible,
         } = this.state
 
         const song = this.getSong() || {}
+        const {id, artists, radio} = song
 
         return (
             <div
@@ -791,9 +814,9 @@ export default class PlayBar extends React.PureComponent {
                             onClick={this.handlePlayNext}
                         >下一首</a>
                     </div>
-                    <Link to={`/song/${song.id}`} styleName="cover" onClick={this.closePanel}>
+                    <Link to={`/song/${id}`} styleName="cover" onClick={this.closePanel}>
                         <img
-                            src={getThumbnail(song.album?.picUrl, 68)}
+                            src={getThumbnail(song?.picUrl, 68)}
                             onError={(e) => {
                                 e.target.src = 'http://s4.music.126.net/style/web2/img/default/default_album.jpg'
                             }}
@@ -805,23 +828,26 @@ export default class PlayBar extends React.PureComponent {
                         styleName="progress"
                     >
                         <div styleName="song-info">
-                            <Link to={`/song/${song.id}`} styleName="song-name" onClick={this.closePanel}>{song.name}</Link>
+                            <Link to={`/song/${id}`} styleName="song-name" onClick={this.closePanel}>{song.name}{song.program ? '[电台节目]' : ''}</Link>
                             {song.mvid ? <Link to={`/mv/${song.mvid}`} styleName="mv" onClick={this.closePanel}/> : null}
                             {
-                                Array.isArray(song.artists)
-                                    ? <div styleName="singer" title={getArtists(song.artists)}>
+                                Array.isArray(artists)
+                                    ? <div styleName="singer" title={getArtists(artists)}>
                                         {
-                                            song.artists.map((artist, i) => {
+                                            artists.map((artist, i) => {
                                                 return <span key={artist.id}>
                                                     <Link to={`/artist/${artist.id}`} onClick={this.closePanel}>{artist.name}</Link>
-                                                    {i !== song.artists.length - 1 ? '/' : ''}
+                                                    {i !== artists.length - 1 ? '/' : ''}
                                                 </span>
                                             })
                                         }
                                     </div>
                                     : null
                             }
-                            {song.id ? <Link to="/link" styleName="song-source" onClick={this.closePanel}/> : null}
+                            {
+                                radio ? <div styleName="singer"><Link to={`/radio/${radio.id}`} onClick={this.closePanel}>{radio.name}</Link></div> : null
+                            }
+                            {id ? <Link to="/link" styleName="song-source" onClick={this.closePanel}/> : null}
                         </div>
                         <div
                             ref={this.progressRef}
@@ -881,7 +907,8 @@ export default class PlayBar extends React.PureComponent {
                             {this.getRenderMode(playSetting.mode)}
                         </div>
                         <div styleName="icon playlist-icon" onClick={this.handleSwitchPlayPanel}>
-                            <div style={{display: addedTipVisible ? 'block' : 'none'}} styleName="added-to-playlist">已添加到播放列表</div>
+                            <div style={{display: playedTipVisible ? 'block' : 'none'}} styleName="operation-tip">已开始播放</div>
+                            <div style={{display: addedTipVisible ? 'block' : 'none'}} styleName="operation-tip">已添加到播放列表</div>
                             {trackQueue.length}
                         </div>
                     </div>
