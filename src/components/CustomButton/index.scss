@@ -1,0 +1,30 @@
+
+.custom-button {
+  display: inline-block;
+  padding: 8px 26px;
+  overflow: hidden;
+  color: #333;
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+  vertical-align: top;
+  background-color: #f7f7f7;
+  border: 1px solid #cdcdcd;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #fff;
+  }
+
+  &.primary {
+    color: #fff;
+    background-color: #2c7dca;
+    border-color: #2c7dca;
+
+    &:hover {
+      background-color: #4a94d9;
+      border-color: #4a94d9;
+    }
+  }
+}

@@ -1,16 +1,17 @@
-import React from 'react'
+import {memo} from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import {PLAY_TYPE} from 'constants/play'
 import Add from 'components/Add'
 import Play from 'components/Play'
+import AddToPlaylist from 'components/AddToPlaylist'
 import {formatDuration} from 'utils'
 import {getRenderKeyword} from 'utils/song'
 
 import './index.scss'
 
 function Songs(props) {
-    const {keyword, list} = props
+    const {keyword = '', list = []} = props
 
     return <div styleName="list">
         {
@@ -37,7 +38,9 @@ function Songs(props) {
                         <Add id={id} type={PLAY_TYPE.SINGLE.TYPE}>
                             <a href={null} styleName="icon add-icon" title="添加到播放列表"/>
                         </Add>
-                        <a href={null} styleName="icon favorite-icon" title="收藏"/>
+                        <AddToPlaylist songIds={[id]}>
+                            <a href={null} styleName="icon favorite-icon" title="收藏"/>
+                        </AddToPlaylist>
                         <a href={null} styleName="icon share-icon" title="分享"/>
                         <a href={null} styleName="icon download-icon" title="下载"/>
                     </div>
@@ -64,9 +67,4 @@ Songs.propTypes = {
     list: PropTypes.array,
 }
 
-Songs.defaultProps = {
-    keyword: '',
-    list: []
-}
-
-export default React.memo(Songs)
+export default memo(Songs)

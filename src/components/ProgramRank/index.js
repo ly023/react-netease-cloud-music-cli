@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, useMemo, useRef} from 'react'
+import {useState, useEffect, useCallback, useMemo, useRef} from 'react'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {getThumbnail} from 'utils'
@@ -11,7 +11,7 @@ import './index.scss'
 
 function ProgramRank(props) {
     const {type, onLoad} = props
-    const isMounted = useRef()
+    const isMounted = useRef(false)
     const [programRank, setProgramRank] = useState([])
     const [loading, setLoading] = useState(false)
 

@@ -1,6 +1,4 @@
 import React from 'react'
-import {hot} from 'react-hot-loader/root'
-import {setConfig} from 'react-hot-loader'
 import {connect} from 'react-redux'
 import {requestLoginStatus} from 'actions/user'
 import NavBar from 'components/NavBar'
@@ -77,9 +75,4 @@ class App extends React.Component {
     }
 }
 
-setConfig({
-    logLevel: 'debug',
-    trackTailUpdates: false,
-})
-
-export default hot(App)
+export default App

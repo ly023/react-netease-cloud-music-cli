@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import {useState, useEffect, useRef, memo} from 'react'
 import {Link} from 'react-router-dom'
 import {DEFAULT_AVATAR} from 'constants'
 import emitter from 'utils/eventEmitter'
@@ -12,7 +12,7 @@ function Info() {
     const [detail, setDetail] = useState(null)
     const [dailySignInLoading, setDailySignInLoading] = useState(false)
     const [signInSuccess, setSignInSuccess] = useState(false)
-    const isMounted = useRef()
+    const isMounted = useRef(false)
 
     const handleCheckIn = () => {
         if (dailySignInLoading) {
@@ -87,7 +87,7 @@ function Info() {
                     ? <a href={null} styleName="checkin-btn checkin-disabled"><span>已签到</span>
                         <div styleName={`point-popover${signInSuccess ? " fade" : ""}`}>
                             <span styleName="point-popover-arrow"/>
-                            <div styleName="point-popover-content">获得 <span
+                            <div>获得 <span
                                 styleName="point">{detail?.signInPoint}</span>积分
                             </div>
                         </div>
@@ -123,4 +123,4 @@ function Info() {
         </div>
 }
 
-export default React.memo(Info)
+export default memo(Info)

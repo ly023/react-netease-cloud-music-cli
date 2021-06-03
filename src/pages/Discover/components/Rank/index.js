@@ -1,13 +1,14 @@
 /**
  *  榜单
  */
-import React, {useState, useEffect, useCallback, useRef} from 'react'
+import {useState, useEffect, useCallback, useRef, memo} from 'react'
 import {Link} from 'react-router-dom'
 import {cloneDeep} from 'lodash'
 import Add from 'components/Add'
 import Play from 'components/Play'
 import ListLoading from 'components/ListLoading'
 import SubscribePlaylist from 'components/SubscribePlaylist'
+import AddToPlaylist from 'components/AddToPlaylist'
 import {PLAYLIST_COLLECTION_TYPE} from 'constants'
 import {PLAY_TYPE} from 'constants/play'
 import {requestRankList} from 'services/toplist'
@@ -18,7 +19,7 @@ import './index.scss'
 function Rank() {
     const [loading, setLoading] = useState([])
     const [rankList, setRankList] = useState(Array.from(new Array(3)))
-    const isMounted = useRef()
+    const isMounted = useRef(false)
 
     useEffect(() => {
         const fetchRankList = async () => {
@@ -124,7 +125,9 @@ function Rank() {
                                                         styleName='icon add-icon'
                                                     />
                                                 </Add>
-                                                <a href={null} title={'收藏'} styleName='icon subscribe-icon'/>
+                                                <AddToPlaylist songIds={[track.id]}>
+                                                    <a href={null} title={'收藏'} styleName='icon subscribe-icon'/>
+                                                </AddToPlaylist>
                                             </div>
                                         </li>
                                     })
@@ -141,4 +144,4 @@ function Rank() {
     </div>
 }
 
-export default React.memo(Rank)
+export default memo(Rank)

@@ -1,7 +1,7 @@
 /**
  * 歌单详情页
  */
-import React from 'react'
+import {Component} from 'react'
 import {withRouter, Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import dayjs from 'dayjs'
@@ -28,7 +28,7 @@ import './index.scss'
     isLogin: user.isLogin,
     userInfo: user.userInfo,
 }))
-export default class PlaylistDetail extends React.Component {
+export default class PlaylistDetail extends Component {
     constructor(props) {
         super(props)
         this.state = this.getInitialState()
@@ -166,7 +166,7 @@ export default class PlaylistDetail extends React.Component {
                                     <h2 styleName="title">{detail.name}</h2>
                                     <div styleName="creator">
                                         <Link to="/" styleName="avatar">
-                                            <img src={detail.creator?.avatarUrl} alt=""/>
+                                            <img src={getThumbnail(detail.creator?.avatarUrl, 120)} alt=""/>
                                         </Link>
                                         <Link to="/" styleName="nickname">{detail.creator?.nickname}</Link>
                                         <span
@@ -183,12 +183,11 @@ export default class PlaylistDetail extends React.Component {
                                         <SubscribePlaylist
                                             id={detail.id}
                                             type={detail.subscribed ? PLAYLIST_COLLECTION_TYPE.CANCEL : PLAYLIST_COLLECTION_TYPE.OK}
-                                            disabled={isSelf}
                                             onSuccess={this.handleSubscribeSuccess}
                                         >
                                             <a
                                                 href={null}
-                                                styleName={`btn-add-favorite ${detail.subscribed ? 'btn-add-favorite-subscribed' : ''} ${isSelf ? 'btn-add-favorite-dis' : ''}`}
+                                                styleName={`btn-add-favorite ${detail.subscribed ? 'btn-add-favorite-subscribed' : ''}`}
                                             >
                                                 <i data-content={detail.subscribedCount ? `(${formatNumber(detail.subscribedCount, 5)})` : '收藏'}/>
                                             </a>
@@ -236,7 +235,7 @@ export default class PlaylistDetail extends React.Component {
                                         <span styleName="out-chain"><i/><a href={null}>生成外链播放器</a></span>
                                     </span>
                                 </div>
-                                <SongTable loading={detailLoading} detail={detail} isSelf={isSelf}/>
+                                <SongTable loading={detailLoading} songs={detail?.songs || []} isSelf={isSelf}/>
                             </div>
                             <Comments
                                 onRef={this.setCommentsRef}

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, useRef} from 'react'
+import {useState, useEffect, useCallback, useRef} from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import {DEFAULT_DOCUMENT_TITLE} from 'constants'
@@ -15,7 +15,7 @@ function RadioCategorySlides(props) {
     const [slides, setSlides] = useState([])
     const [activePageIndex, setActivePageIndex] = useState(0)
     const [pagination, setPagination] = useState([])
-    const isMounted = useRef()
+    const isMounted = useRef(false)
 
     useEffect(() => {
         isMounted.current = true

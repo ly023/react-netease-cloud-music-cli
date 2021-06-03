@@ -3,15 +3,15 @@
   overflow-y: -moz-scrollbars-none;
 
   &::-webkit-scrollbar {
-    width: 0 !important
+    width: 0 !important;
   }
 }
 
 .item {
   position: relative;
+  box-sizing: border-box;
   height: 28px;
   padding: 0 6px 0 10px;
-  box-sizing: border-box;
   line-height: 28px;
   cursor: pointer;
 
@@ -37,12 +37,13 @@
 
   .arrow-play-icon {
     display: inline-block;
-    margin-top: 8px;
     width: 10px;
     height: 13px;
-    @extend %background-playlist;
+    margin-top: 8px;
     background-position: -182px 0;
     visibility: hidden;
+
+    @extend %background-playlist;
   }
 
   .name,
@@ -66,7 +67,9 @@
 
 .name {
   width: 256px;
+
   @extend %text-ellipsis;
+
   color: #ccc;
 }
 
@@ -79,9 +82,10 @@
   .icon {
     float: right;
     height: 16px;
-    overflow: hidden;
     margin: 7px 0 0 10px;
+    overflow: hidden;
     text-indent: -9999px;
+
     @extend %background-playlist;
   }
 
@@ -124,7 +128,9 @@
 
 .artists {
   width: 70px;
+
   @extend %text-ellipsis;
+
   color: #ccc;
 
   a {
@@ -148,10 +154,11 @@
     width: 14px;
     height: 16px;
     margin: 0 0 0 20px;
-    vertical-align: middle;
     text-indent: -9999px;
+    vertical-align: middle;
+    background-position: -80px 0;
+
     @extend %background-playlist;
-    background-position: -80px 0px;
 
     &:hover {
       background-position: -80px -20px;

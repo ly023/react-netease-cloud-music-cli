@@ -1,7 +1,8 @@
-import React from 'react'
+import {useCallback} from 'react'
 import PropTypes from 'prop-types'
 import {PLAY_TYPE} from 'constants/play'
 import Add from 'components/Add'
+import AddToPlaylist from 'components/AddToPlaylist'
 
 import './index.scss'
 
@@ -13,14 +14,14 @@ const ACTION_TYPES = {
     delete: '删除',
 }
 
-const actions = Object.keys(ACTION_TYPES)
+const defaultActions = Object.keys(ACTION_TYPES)
 
 function SongActions(props) {
-    const {id, isSelf} = props
+    const {id, actions = defaultActions, isSelf = false} = props
 
-    const hasAction = (action) => {
-        return props.actions.includes(action)
-    }
+    const hasAction = useCallback((action) => {
+        return actions.includes(action)
+    }, [actions])
 
     return <div styleName="actions">
         {
@@ -29,7 +30,11 @@ function SongActions(props) {
             </Add> : null
         }
         {
-            hasAction('favorite') ? <a href={null} styleName="icon favorite">{ACTION_TYPES.favorite}</a> : null
+            hasAction('favorite')
+                ? <AddToPlaylist songIds={[id]}>
+                    <a href={null} styleName="icon favorite">{ACTION_TYPES.favorite}</a>
+                </AddToPlaylist>
+                : null
         }
         {
             hasAction('share') ? <a href={null} styleName="icon share">{ACTION_TYPES.share}</a> : null
@@ -54,11 +59,6 @@ SongActions.propTypes = {
         }
     }),
     isSelf: PropTypes.bool,
-}
-
-SongActions.defaultProps = {
-    actions: actions,
-    isSelf: false,
 }
 
 export default SongActions

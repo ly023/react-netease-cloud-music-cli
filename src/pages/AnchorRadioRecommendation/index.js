@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo, useRef} from 'react'
+import {useState, useEffect, useMemo, useRef} from 'react'
 import {Link} from 'react-router-dom'
 import Page from 'components/Page'
 import ListLoading from 'components/ListLoading'
@@ -13,7 +13,7 @@ import './index.scss'
 function AnchorRadioRecommendation() {
     const [loading, setLoading] = useState(false)
     const [programs, setPrograms] = useState([])
-    const isMounted = useRef()
+    const isMounted = useRef(false)
 
     useEffect(() => {
         isMounted.current = true

@@ -1,7 +1,7 @@
 /**
  * 首页轮播图
  */
-import React, {useState, useEffect, useCallback, useMemo, useRef} from 'react'
+import {useState, useEffect, useCallback, useMemo, useRef} from 'react'
 import {Link} from 'react-router-dom'
 import Slider from 'react-slick'
 import {requestDiscoverBanners} from 'services/banners'
@@ -14,7 +14,7 @@ import './index.scss'
 function Banner() {
     const [banners, setBanners] = useState([])
     const [activeUrl, setActiveUrl] = useState('')
-    const isMounted = useRef()
+    const isMounted = useRef(false)
 
     useEffect(() => {
         const fetchBanners = async () => {

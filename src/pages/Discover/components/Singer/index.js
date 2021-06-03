@@ -1,13 +1,13 @@
-import React, {useState, useEffect, useRef} from 'react'
+import {useState, useEffect, useRef, memo} from 'react'
 import {Link} from 'react-router-dom'
 import {requestArtist} from 'services/artist'
+import {getThumbnail} from 'utils'
 
 import './index.scss'
-import {getThumbnail} from "utils/index";
 
 function Singer() {
     const [artists, setArtists] = useState([])
-    const isMounted = useRef()
+    const isMounted = useRef(false)
 
     useEffect(() => {
         const fetchArtist = async () => {
@@ -52,4 +52,4 @@ function Singer() {
     </section>
 }
 
-export default React.memo(Singer)
+export default memo(Singer)

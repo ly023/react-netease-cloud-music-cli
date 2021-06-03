@@ -502,7 +502,7 @@ export default class Comments extends React.Component {
 
         return (
             <>
-                <div id={`${this.domIdPrefix}-wrapper`} styleName="wrapper">
+                <div id={`${this.domIdPrefix}-wrapper`}>
                     <div styleName="title">
                         <h3><span>评论</span></h3><span styleName="count">共{total}条评论</span>
                     </div>
@@ -542,7 +542,7 @@ export default class Comments extends React.Component {
                                             {this.getRenderComments(comments)}
                                             <div styleName="pagination">
                                                 <Pagination
-                                                    total={Math.ceil(total / PAGINATION_LIMIT)}
+                                                    total={total}
                                                     current={current}
                                                     onChange={this.handlePageChange}
                                                     el={document.getElementById(`${this.domIdPrefix}-wrapper`)}

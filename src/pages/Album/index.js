@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, useMemo, useRef} from 'react'
+import {useState, useEffect, useCallback, useMemo, useRef} from 'react'
 import {Link, useHistory, useLocation} from 'react-router-dom'
 import {stringify} from 'qs'
 import Page from 'components/Page'
@@ -19,7 +19,7 @@ function Album() {
     const {pathname, search} = useLocation()
     const [newestAlbum, setNewestAlbum] = useState([])
     const [allNewAlbum, setAllNewAlbum] = useState([])
-    const isMounted = useRef()
+    const isMounted = useRef(false)
     const listWrapperRef = useRef()
 
     const getPage = useCallback(() => {
@@ -61,7 +61,7 @@ function Album() {
         return () => {
             isMounted.current = false
         }
-        // eslint-disable-next-line
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const fetchAllNewAlbum = useCallback(async () => {
@@ -86,7 +86,7 @@ function Album() {
         } finally {
             setTopLoading(false)
         }
-        // eslint-disable-next-line
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params])
 
     const handlePageChange = useCallback((page) => {
@@ -96,12 +96,12 @@ function Album() {
             page
         })}`
         history.push(url)
-        // eslint-disable-next-line
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history, params, pathname])
 
     useEffect(()=>{
         fetchAllNewAlbum()
-        // eslint-disable-next-line
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search])
 
     const documentTitle = useMemo(() => `新碟上架 - ${DEFAULT_DOCUMENT_TITLE}`, [])
@@ -168,7 +168,8 @@ function Album() {
                 <div styleName="pagination">
                     <Pagination
                         current={current}
-                        total={Math.ceil(total / params.limit)}
+                        total={total}
+                        pageSize={params.limit}
                         onChange={handlePageChange}
                         el={listWrapperRef.current}
                     />

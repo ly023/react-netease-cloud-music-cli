@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, useRef} from 'react'
+import {useState, useEffect, useCallback, useRef} from 'react'
 import {withRouter, Link, useHistory, useLocation} from 'react-router-dom'
 import {stringify} from 'qs'
 import SubTitle from 'components/SubTitle'
@@ -35,7 +35,7 @@ function RadioRank(props) {
     const [total, setTotal] = useState(0)
     const [radios, setRadios] = useState([])
     const [loading, setLoading] = useState(false)
-    const isMounted = useRef()
+    const isMounted = useRef(false)
 
     useEffect(() => {
         isMounted.current = true
@@ -73,7 +73,7 @@ function RadioRank(props) {
             }
         }
         fetchCategoryHot()
-        // eslint-disable-next-line
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [getPage, search])
 
     const handlePageChange = useCallback((page) => {
@@ -120,7 +120,8 @@ function RadioRank(props) {
                 <div styleName="pagination">
                     <Pagination
                         current={current}
-                        total={Math.ceil(total / params.limit)}
+                        total={total}
+                        pageSize={params.limit}
                         onChange={handlePageChange}
                     />
                 </div>

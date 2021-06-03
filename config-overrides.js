@@ -1,11 +1,34 @@
-const {override, useBabelRc, useEslintRc, addDecoratorsLegacy, overrideDevServer, addBabelPlugins, addWebpackAlias, addWebpackPlugin} = require('customize-cra')
+const {override, addDecoratorsLegacy, overrideDevServer, addBabelPlugins, addWebpackAlias, addWebpackPlugin} = require('customize-cra')
 const path = require('path')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin; // 可视化资源分析
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const apiMocker = require('mocker-api');
+const loaderUtils = require('loader-utils')
+
+const CSS_MODULE_LOCAL_IDENT_NAME = '[folder]-[local]-[hash:base64:5]'
 
 function resolve(dir) {
     return path.join(__dirname, '.', dir)
+}
+
+function generateScopedName(pattern) {
+    const context = process.cwd();
+    return function generate(localName, filepath) {
+        const name = pattern.replace(/\[local\]/gi, localName);
+        const loaderContext = {
+            resourcePath: filepath,
+        };
+
+        const loaderOptions = {
+            content: `${path.relative(context, filepath).replace(/\\/g, '/')}\u0000${localName}`,
+            context,
+        };
+
+        const genericName = loaderUtils.interpolateName(loaderContext, name, loaderOptions);
+        return genericName
+            .replace(new RegExp('[^a-zA-Z0-9\\-_\u00A0-\uFFFF]', 'g'), '-')
+            .replace(/^((-?[0-9])|--)/, '_$1');
+    };
 }
 
 const changeModuleRules = () => config => {
@@ -19,7 +42,7 @@ const changeModuleRules = () => config => {
     });
 
     loaders[loaders.length - 3].use[1].options.modules = {
-        localIdentName: '[folder]-[local]-[hash:base64:5]'
+        localIdentName: CSS_MODULE_LOCAL_IDENT_NAME,
     }
 
     return config;
@@ -28,6 +51,7 @@ const changeModuleRules = () => config => {
 const devServerConfig = () => config => {
     return {
         ...config,
+        hot: true,
         before(app) {
             apiMocker(app, path.resolve('src/mock/index.js'))
         },
@@ -44,12 +68,6 @@ const devServerConfig = () => config => {
 
 module.exports = {
     webpack: override(
-        // 允许使用.babelrc文件进行babel配置
-        useBabelRc(),
-
-        // 许使用.eslintrc
-        useEslintRc(),
-
         // 装饰器，依赖@babel/plugin-proposal-decorators
         addDecoratorsLegacy(),
 
@@ -64,7 +82,7 @@ module.exports = {
                         }
                     },
                     "exclude": "node_modules",
-                    "generateScopedName": "[folder]-[local]-[hash:base64:5]",
+                    "generateScopedName": generateScopedName(CSS_MODULE_LOCAL_IDENT_NAME),
                     "autoResolveMultipleImports": true
                 }
             ],
@@ -89,7 +107,6 @@ module.exports = {
 
         // 配置路径别名
         addWebpackAlias({
-            'react-dom': '@hot-loader/react-dom',
             actions: resolve('src/actions'),
             assets: resolve('src/assets'),
             api: resolve('src/api'),
@@ -107,6 +124,7 @@ module.exports = {
         }),
 
         changeModuleRules(),
+
     ),
     devServer: overrideDevServer(
         devServerConfig()

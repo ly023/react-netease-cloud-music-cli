@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react'
+import {useEffect} from 'react'
 import PropTypes from 'prop-types'
-import {Helmet} from 'react-helmet'
+import {Helmet, HelmetProvider} from 'react-helmet-async'
 import NProgress from 'nprogress'
 import {DEFAULT_DOCUMENT_TITLE} from 'constants'
 import FooterBar from 'components/FooterBar'
@@ -19,7 +19,7 @@ const progress = NProgress.configure({
 progress.start()
 
 function Page(props) {
-    const {children, title, showFooter, showBackTop} = props
+    const {children, title = DEFAULT_DOCUMENT_TITLE, showFooter = true, showBackTop = true} = props
 
     useEffect(() => {
         progress.done()
@@ -30,9 +30,11 @@ function Page(props) {
 
     return (
         <>
-            <Helmet>
-                <title>{title}</title>
-            </Helmet>
+            <HelmetProvider>
+                <Helmet>
+                    <title>{title}</title>
+                </Helmet>
+            </HelmetProvider>
             {children}
             {showFooter ? <FooterBar/> : null}
             {showBackTop ? <BackTop/> : null}
@@ -44,12 +46,6 @@ Page.propTypes = {
     title: PropTypes.string,
     showFooter: PropTypes.bool,
     showBackTop: PropTypes.bool,
-}
-
-Page.defaultProps = {
-    title: DEFAULT_DOCUMENT_TITLE,
-    showFooter: true,
-    showBackTop: true
 }
 
 export default Page

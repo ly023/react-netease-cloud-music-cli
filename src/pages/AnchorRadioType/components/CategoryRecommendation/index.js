@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react'
+import {useEffect, useState, useRef} from 'react'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import SubTitle from 'components/SubTitle'
@@ -9,7 +9,7 @@ import {requestCategoryRecommendation} from 'services/radio'
 import './index.scss'
 
 function CategoryRecommendation({type}) {
-    const isMounted = useRef()
+    const isMounted = useRef(false)
     const [radios, setRadios] = useState([])
     const [loading, setLoading] = useState(false)
 
