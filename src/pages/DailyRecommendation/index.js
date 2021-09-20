@@ -6,10 +6,11 @@ import Add from 'components/Add'
 import AddToPlaylist from 'components/AddToPlaylist'
 import ClientDownload from 'components/ClientDownload'
 import {DEFAULT_DOCUMENT_TITLE} from 'constants'
-import {PLAY_TYPE} from 'constants/play'
+import {PLAY_TYPE} from 'constants/music'
 import {requestRcmdSongs} from 'services/rcmd'
 import {requestDetail} from 'services/user'
 import useShallowEqualSelector from 'utils/useShallowEqualSelector'
+import {parseSongs} from 'utils/song'
 
 import './index.scss'
 
@@ -24,22 +25,6 @@ function DailyRecommendation() {
 
     useEffect(() => {
         isMounted.current = true
-
-        const parseSongs = (songs = []) => {
-            const newSongs = []
-            const len = songs.length
-            for (let i = 0; i < len; i++) {
-                const item = songs[i]
-                newSongs.push({
-                    ...item,
-                    mv: item.mvid,
-                    duration: item.dt,
-                    artists: item.ar,
-                    album: item.al,
-                })
-            }
-            return newSongs
-        }
 
         const fetchRcmdSongs = async () => {
             try {

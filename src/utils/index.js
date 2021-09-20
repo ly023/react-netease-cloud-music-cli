@@ -28,20 +28,21 @@ export function getCsrfToken() {
 /**
  * 格式化数字
  * @param number
- * @param startIndex: 转换的起步指数
  * @param digits: 保留的小数位
  * @returns {string|number|*}
  */
-export function formatNumber(number, startIndex = 4, digits = 0) {
-    if (!number) {
+export function formatNumber(number, digits = 0) {
+    if (typeof number !== 'number') {
         return 0
     }
-    const start = Number(`1e${startIndex}`)
-    if (number / start > 1) {
-        return `${trunc(number / 1e4, digits)}万`
-    } else {
+    const base = 1e4;
+    const units = ['', '万', '亿']
+
+    if (number < base) {
         return number
     }
+    const exponent = Math.floor(Math.log(number) / Math.log(base))
+    return `${trunc(number / Math.pow(base, exponent), digits)}${units[exponent]}`
 }
 
 /**
@@ -274,6 +275,31 @@ export function generateRandomString(length = 8) {
 }
 
 /**
+ * 获取url所有参数
+ * @param url
+ * @returns {{}}
+ */
+export function getUrlParameters(url) {
+    if (!url || typeof url !== 'string') {
+        url = window.location.href
+    }
+    // 使用 /\?([^/?#:]+)#?/ 正则来匹配 ? 与 #（#为位置标识符）之间的非/?#:字符
+    const queryString = url.match(/\?([^/?#:]+)#?/)?.[1]
+
+    if (!queryString) {
+        return {}
+    }
+
+    const queryObj = queryString.split('&').reduce((params, block) => {
+        // 如果未赋值，则默认为空字符串
+        const [k, v = ''] = block.split('=')
+        params[k] = decodeURIComponent(v)
+        return params
+    }, {})
+    return queryObj
+}
+
+/**
  * 获取url参数
  * @param name
  * @returns {string}
@@ -305,7 +331,20 @@ export function replaceUrlParamVal(name, replaceWith, url) {
  * @returns {number}
  */
 export function getScrollTop() {
-    return document.documentElement.scrollTop || document.body.scrollTop
+    // safari: window.pageYOffset
+    return document.documentElement.scrollTop || document.body.scrollTop || window.pageYOffset
+}
+
+/**
+ * 获取当前页面内容高度
+ * @returns {number}
+ */
+export function getScrollHeight() {
+    return document.documentElement.scrollHeight || document.body.scrollHeight
+}
+
+export function getClientHeight() {
+    return document.documentElement.clientHeight || document.body.clientHeight
 }
 
 /**
@@ -346,4 +385,29 @@ export function bytes(str) {
         }
     }
     return total
+}
+
+export function isEndReached(element, offset = 10) {
+    if (element) {
+        const rectObject = element.getBoundingClientRect()
+        const top = rectObject?.top || 0
+        const scrollTop = getScrollTop()
+        const clientHeight = getClientHeight()
+        return scrollTop + clientHeight + offset >= top
+    }
+    return true
+}
+
+export function getUrlPaginationParams(defaultLimit = 30, defaultOffset = 0) {
+    let limit = defaultLimit
+    const urlLimit = getUrlParameter('limit')
+    if (urlLimit && /^\+?[1-9][0-9]*$/.test(urlLimit)) {
+        limit = Number(urlLimit)
+    }
+    let offset = defaultOffset
+    const urlOffset = getUrlParameter('offset')
+    if (urlOffset && /^\d+$/.test(urlOffset)) {
+        offset = Number(urlOffset)
+    }
+    return {limit, offset}
 }

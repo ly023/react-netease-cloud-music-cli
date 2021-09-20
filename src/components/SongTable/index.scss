@@ -8,7 +8,7 @@
   th {
     height: 38px;
     vertical-align: top;
-    background-color: #f7f7f7;
+    background-color: $bg-color;
     background-repeat: repeat-x;
     background-position: 0 0;
 
@@ -16,10 +16,6 @@
 
     &.w1 {
       width: 74px;
-
-      &.special {
-        width: 96px;
-      }
     }
 
     &.w2 {
@@ -41,7 +37,7 @@
     .th {
       height: 18px;
       padding: 8px 10px;
-      color: #666;
+      color: $font-color;
       font-weight: 400;
       line-height: 18px;
       text-align: left;
@@ -56,29 +52,22 @@
   }
 
   td {
+    height: 18px;
     padding: 6px 10px;
     line-height: 18px;
-    text-align: left;
   }
 
   .even {
     td {
-      background-color: #f7f7f7;
+      background-color: $bg-color;
     }
   }
 
   .track {
-    color: #333;
+    color: $font-primary-color;
 
     &.disabled * {
       color: #bbb;
-    }
-
-    &.disabled .order .ply,
-    &.disabled .order .ply:hover {
-      background-position: 0 -103px;
-      cursor: default;
-      opacity: 0.5;
     }
 
     &.disabled:hover {
@@ -131,23 +120,10 @@
         @extend %background-icon;
       }
 
-      .ply {
-        display: inline-block;
+      .play {
         float: right;
-        width: 17px;
         height: 17px;
-        background-position: 0 -103px;
-        cursor: pointer;
-
-        @extend %background-table;
-
-        &:hover {
-          background-position: 0 -128px;
-        }
-
-        &.ply-active {
-          background-position: -20px -128px;
-        }
+        line-height: 15px;
       }
     }
 
@@ -178,7 +154,7 @@
     }
 
     .duration {
-      color: #666;
+      color: $font-color;
 
       .actions {
         display: none;

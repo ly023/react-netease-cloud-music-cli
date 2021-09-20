@@ -21,6 +21,10 @@
   text-indent: -9999px;
 }
 
+.wrapper {
+  transition: background 0.3s ease-in;
+}
+
 .banner {
   position: relative;
   z-index: 1;
@@ -83,10 +87,24 @@
         background-position: 0 -578px;
       }
     }
+
+    .slick-slide {
+      z-index: -1;
+
+      &.slick-active.slick-current {
+        z-index: 1;
+      }
+    }
   }
 
-  .slide img {
-    vertical-align: top;
+  .slide {
+    a {
+      display: block;
+    }
+
+    img {
+      vertical-align: top;
+    }
   }
 
   .download {

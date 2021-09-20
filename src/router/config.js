@@ -8,7 +8,9 @@ import loadable from '@loadable/component'
 // const importViews = file => loadable(() => import(`pages/${file}`))
 
 function importPages(filename) {
-    return loadable(() => import(`pages/${filename}`))
+    return loadable(() => import(`pages/${filename}`), {
+        // fallback: <PageLoading/>,
+    })
 }
 
 export default [
@@ -70,6 +72,11 @@ export default [
         component: importPages('DailyRecommendation'),
     },
     {
+        path: '/discover/toplist',
+        name: '排行榜',
+        component: importPages('RankingList'),
+    },
+    {
         path: '/friend',
         name: '朋友',
         component: importPages('Friend'),
@@ -95,14 +102,41 @@ export default [
         component: importPages('AlbumDetail'),
     },
     {
+        path: '/radio/:id',
+        name: '电台详情',
+        component: importPages('RadioDetail'),
+    },
+    {
+        path: '/artist/:id',
+        name: '歌手详情',
+        component: importPages('ArtistDetail'),
+    },
+    {
         path: '/search',
         name: '搜索',
         component: importPages('Search'),
     },
     {
+        path: '/my/music',
+        name: '我的音乐',
+        exact: true,
+        component: () => <Redirect to={'/my/music/playlist/:id'}/>
+    },
+    {
+        path: '/my/music/playlist/:id',
+        name: '我创建的歌单',
+        exact: true,
+        component: importPages('MyPlaylist'),
+    },
+    {
         path: '/user/home/:id',
         name: '用户主页',
         component: importPages('UserHome'),
+    },
+    {
+        path: '/user/songs/rank/:id',
+        name: '用户听歌排行',
+        component: importPages('UserSongsRank'),
     },
     {
         path: '/user/update/:id',
@@ -111,6 +145,10 @@ export default [
             requiresAuth: true
         },
         component: importPages('UserUpdate'),
+    },
+    {
+        path: '/401',
+        component: importPages('401'),
     },
     {
         path: '*',

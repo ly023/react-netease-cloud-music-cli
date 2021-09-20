@@ -6,12 +6,13 @@ import PropTypes from 'prop-types'
 import {useDispatch} from 'react-redux'
 import _ from 'lodash'
 import emitter from 'utils/eventEmitter'
-import {PLAY_TYPE} from 'constants/play'
+import {PLAY_TYPE} from 'constants/music'
 import {setUserPlayer} from 'actions/user'
 import {requestDetail as requestPlaylistDetail} from 'services/playlist'
 import {requestDetail as requestSongDetail} from 'services/song'
 import {requestDetail as requestAlbumDetail} from 'services/album'
-import {requestDetail as requestRadioDetail} from 'services/radio'
+import {requestDetail as requestProgramDetail} from 'services/program'
+import {requestPrograms} from 'services/radio'
 import useShallowEqualSelector from 'utils/useShallowEqualSelector'
 import {hasPrivilege, isShuffleMode, formatTrack} from 'utils/song'
 
@@ -74,16 +75,18 @@ function Play(props) {
                     }
                 } else {
                     emitPlay = false
+                    // todo
+                    console.log('没有播放权限')
                 }
             }
         // 电台节目
         } else if(type === PLAY_TYPE.PROGRAM.TYPE) {
-            const trackIndex = localTrackQueue.findIndex((v) => v.id === id)
+            const trackIndex = localTrackQueue.findIndex((v) => v.program.id === id)
             if (trackIndex !== -1) {
                 trackQueue = localTrackQueue
                 index = trackIndex
             } else {
-                const res = await requestRadioDetail({id})
+                const res = await requestProgramDetail({id})
                 const track = formatTrack(res?.program, true)
                 trackQueue = localTrackQueue.concat([track])
                 index = trackQueue.length - 1
@@ -99,7 +102,7 @@ function Play(props) {
                 }
             }
         } else {
-            // 歌单、专辑
+            // 歌单、专辑、电台
             let newTrackQueue = []
             if (type === PLAY_TYPE.PLAYLIST.TYPE) {
                 if (id && !Number.isNaN(id)) {
@@ -131,8 +134,15 @@ function Play(props) {
                         newTrackQueue.push(formatTrack(item))
                     } else {
                         // todo
-                        console.log('不可听')
+                        console.log('没有播放权限')
                     }
+                }
+            } else if (type === PLAY_TYPE.RADIO.TYPE) {
+                const res = await requestPrograms({rid: id, limit: 1000})
+                const programs = res?.programs || []
+                for (let i = 0; i < programs.length; i++) {
+                    const item = programs[i]
+                    newTrackQueue.push(formatTrack(item, true))
                 }
             }
 

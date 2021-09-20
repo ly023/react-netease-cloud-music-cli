@@ -1,6 +1,10 @@
 
+.body {
+  padding: 40px 20px;
+}
+
 .content {
-  color: #333;
+  color: $font-primary-color;
   font-size: 14px;
   text-align: center;
 }
@@ -40,7 +44,7 @@
   .cancel {
     @extend %white-button;
 
-    color: #333;
+    color: $font-primary-color;
     background-position: right -100px;
 
     > i {

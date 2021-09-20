@@ -1,27 +1,32 @@
 import {memo} from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
-import {PLAY_TYPE} from 'constants/play'
+import {PLAY_TYPE} from 'constants/music'
 import Add from 'components/Add'
-import Play from 'components/Play'
+import SinglePlay from 'components/SinglePlay'
 import AddToPlaylist from 'components/AddToPlaylist'
 import {formatDuration} from 'utils'
 import {getRenderKeyword} from 'utils/song'
+import useShallowEqualSelector from 'utils/useShallowEqualSelector'
 
 import './index.scss'
 
 function Songs(props) {
     const {keyword = '', list = []} = props
+    const {currentSong = {}} = useShallowEqualSelector(({user}) => ({
+        currentSong: user.player.currentSong,
+    }))
 
     return <div styleName="list">
         {
             list.map((item, index)=>{
                 const {id, name, alias} = item
                 const isEven = (index + 1) % 2 === 0
+
                 return <div key={id} styleName={`item${isEven ? ' even' : ''}`}>
-                    <Play id={id} type={PLAY_TYPE.SINGLE.TYPE}>
-                        <i styleName="icon play-icon"/>
-                    </Play>
+                    <span styleName="play-icon">
+                        <SinglePlay id={id} active={currentSong?.id === id}/>
+                    </span>
                     <div styleName="td name">
                         <Link to={`/song/${id}`}>
                             {getRenderKeyword(name, keyword)}
@@ -54,7 +59,7 @@ function Songs(props) {
                             })
                         }
                     </span>
-                    <a href={null} styleName="td album">《{getRenderKeyword(item.album?.name, keyword)}》</a>
+                    <Link to={`/album/${item.album?.id}`} styleName="td album">《{getRenderKeyword(item.album?.name, keyword)}》</Link>
                     <span styleName="td">{formatDuration(item.duration)}</span>
                 </div>
             })

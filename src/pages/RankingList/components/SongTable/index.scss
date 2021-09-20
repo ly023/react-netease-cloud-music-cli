@@ -1,0 +1,152 @@
+.table {
+  width: 100%;
+  table-layout: fixed;
+  border: 1px solid #d9d9d9;
+  border-collapse: collapse;
+  border-spacing: 0;
+
+  th {
+    height: 38px;
+    vertical-align: top;
+    background-color: $bg-color;
+    background-repeat: repeat-x;
+    background-position: 0 0;
+
+    @extend %background-table;
+
+    &.w1 {
+      width: 40px;
+    }
+
+    &.w3 {
+      width: 91px;
+    }
+
+    &.w4 {
+      width: 26%;
+    }
+
+    .th {
+      height: 18px;
+      padding: 8px 10px;
+      color: $font-color;
+      font-weight: 400;
+      line-height: 18px;
+      text-align: left;
+      background-position: 0 -56px;
+
+      @extend %background-table;
+
+      &.first {
+        background: none;
+      }
+    }
+  }
+
+  td {
+    padding: 6px 10px;
+    line-height: 18px;
+    text-align: left;
+  }
+
+  .even {
+    td {
+      background-color: $bg-color;
+    }
+  }
+
+  .track {
+    color: $font-primary-color;
+
+    &.disabled * {
+      color: #bbb;
+    }
+
+    &.disabled:hover {
+      .duration {
+        color: #bbb;
+
+        .time {
+          display: inline-block;
+        }
+
+        .actions {
+          display: none;
+        }
+      }
+    }
+
+    &:hover {
+      .duration {
+        .time {
+          display: none;
+        }
+
+        .actions {
+          display: inline-block;
+        }
+      }
+    }
+
+    .order {
+      color: #999;
+
+      .number {
+        margin-left: 5px;
+      }
+    }
+
+    .album-cover {
+      width: 50px;
+      height: 50px;
+      margin-right: 14px;
+      vertical-align: middle;
+    }
+
+    .name {
+      display: inline-block;
+      max-width: 90%;
+      margin-left: 8px;
+
+      &.top {
+        display: inline-block;
+        max-width: 70%;
+      }
+
+      @extend %text-ellipsis;
+
+      .alias {
+        color: #aeaeae;
+      }
+
+      .mv-icon {
+        display: inline-block;
+        width: 23px;
+        height: 17px;
+        margin: 0 0 0 4px;
+        vertical-align: middle;
+        background-position: 0 -151px;
+        cursor: pointer;
+
+        @extend %background-table;
+
+        &:hover {
+          background-position: -30px -151px;
+        }
+      }
+    }
+
+    .duration {
+      color: $font-color;
+
+      .actions {
+        display: none;
+        cursor: pointer;
+      }
+    }
+
+    .artists {
+      @extend %text-ellipsis;
+    }
+  }
+}

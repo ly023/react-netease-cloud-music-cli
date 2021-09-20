@@ -23,6 +23,7 @@
     height: auto;
     overflow-y: auto;
     white-space: pre-wrap;
+    visibility: hidden;
   }
 }
 
@@ -60,7 +61,7 @@
     line-height: 25px;
 
     &.error {
-      color: #c20c0c;
+      color: $light-primary-color;
     }
   }
 

@@ -1,17 +1,17 @@
 
 .title {
-  height: 40px;
-  border-bottom: 2px solid #c20c0c;
+  border-bottom: 2px solid $light-primary-color;
 
   h3 {
     float: left;
+    margin-bottom: 8px;
     font-weight: normal;
     font-size: 24px;
   }
 
   .guide {
     margin-top: 14px;
-    color: #666;
+    color: $font-color;
     font-family: Microsoft Yahei, Arial, Helvetica, sans-serif;
   }
 }

@@ -18,22 +18,22 @@ function FooterBar() {
             <div styleName='wrapper'>
                 <div styleName='copy'>
                     <p>
-                        <a href='https://music.163.com/html/web2/service.html' target='_blank'
+                        <a href='https://music.163.com/html/web2/service.html' target="_blank" rel="noreferrer"
                            styleName='link color-1'>服务条款</a><span
                         styleName='copy-line'>|</span>
-                        <a href='https://music.163.com/html/web2/privacy.html' target='_blank'
+                        <a href='https://music.163.com/html/web2/privacy.html' target="_blank" rel="noreferrer"
                            styleName='link color-1'>隐私政策</a><span
                         styleName='copy-line'>|</span>
-                        <a href='https://music.163.com/st/staticdeal/complaints.html' target='_blank'
+                        <a href='https://music.163.com/st/staticdeal/complaints.html' target="_blank" rel="noreferrer"
                            styleName='link color-1'>版权投诉指引</a><span
                         styleName='copy-line'>|</span>
                         <a styleName='link color-1' hidefocus='true' onClick={showFeedback}>意见反馈</a>
                         <FeedbackModal visible={feedbackVisible} onCancel={hideFeedback}/>
                     </p>
                     <p styleName='color-2'>
-                        <span styleName='copy-sep-company'>网易公司版权所有©1997-2019</span>杭州乐读科技有限公司运营：<a
-                        href='http://p1.music.126.net/-DB9zs1FAJq8vg7HOb-yOQ==/3250156395654666.jpg' target='_blank'
-                        styleName='link color-2'>浙网文[2018] 3506-263号</a>
+                        <span styleName='copy-sep-company'>网易公司版权所有©1997-2021</span>杭州乐读科技有限公司运营：<a
+                        href='https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/8282703158/452a/ca0c/3a10/caad83bc8ffaa850a9dc1613d74824fc.png' target='_blank'
+                        styleName='link color-2'>浙网文[2021] 1186-054号</a>
                     </p>
                     <p styleName='color-2'>
                         违法和不良信息举报电话：0571-89853516<span styleName='copy-sep-email'>举报邮箱：<a

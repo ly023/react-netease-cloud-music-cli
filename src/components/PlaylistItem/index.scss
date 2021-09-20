@@ -75,6 +75,10 @@
   margin: 8px 0 0;
   color: #000;
   font-size: 14px;
+
+  &.ellipsis {
+    @extend %text-ellipsis;
+  }
 }
 
 .creator {
@@ -84,7 +88,7 @@
   .nickname {
     display: inline-block;
     max-width: 76%;
-    color: #666;
+    color: $font-color;
     vertical-align: middle;
 
     @extend %text-ellipsis;

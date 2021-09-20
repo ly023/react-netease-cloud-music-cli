@@ -17,7 +17,7 @@
       display: block;
       width: 100%;
       height: 100%;
-      background-color: #f7f7f7;
+      background-color: $bg-color;
       content: '  ';
     }
 
@@ -80,6 +80,7 @@
   font-weight: 400;
   font-size: 20px;
   line-height: 24px;
+  word-break: break-all;
 }
 
 .creator {
@@ -208,13 +209,23 @@
   }
 
   .btn-add-favorite {
-    &.btn-add-favorite-subscribed {
+    &.btn-add-favorite-subscribed,
+    &.btn-add-favorite-dis {
       background-position: right -1192px;
 
       &:hover i,
       i {
         color: #bebebe;
         background-position: 0 -1149px;
+      }
+    }
+
+    &.btn-add-favorite-dis {
+      cursor: default;
+
+      &:hover i,
+      i {
+        cursor: default;
       }
     }
 
@@ -290,11 +301,11 @@
 }
 
 .desc {
-  color: #666;
+  color: $font-color;
   line-height: 18px;
 
   b {
-    color: #666;
+    color: $font-color;
     font-weight: normal;
   }
 
@@ -307,7 +318,7 @@
       padding: 2px 13px;
       color: #777;
       text-decoration: none;
-      background-color: #f7f7f7;
+      background-color: $bg-color;
       border: 1px solid #e4e4e4;
       border-radius: 14px;
     }
@@ -332,31 +343,11 @@
     }
 
     .other {
-      color: #666;
+      color: $font-color;
       font-size: 12px;
 
       .total {
         margin: 9px 0 0 20px;
-      }
-
-      .out-chain {
-        float: right;
-        margin: 5px 20px 0 0;
-
-        i {
-          display: inline-block;
-          width: 16px;
-          height: 16px;
-          vertical-align: middle;
-          background-position: -34px -863px;
-
-          @extend %background-icon;
-        }
-
-        a {
-          color: #4996d1;
-          text-decoration: underline;
-        }
       }
 
       .more {

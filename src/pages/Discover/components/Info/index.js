@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef, memo} from 'react'
+import {useState, useEffect, useCallback, useRef, memo} from 'react'
 import {Link} from 'react-router-dom'
 import {DEFAULT_AVATAR} from 'constants'
 import emitter from 'utils/eventEmitter'
@@ -50,10 +50,17 @@ function Info() {
             })
     }
 
-    const handleLogin = () => {
-        // 事件通知
+    const handleLogin = useCallback(() => {
         emitter.emit('login')
-    }
+    }, [])
+
+    useEffect(() => {
+        isMounted.current = true
+
+        return () => {
+            isMounted.current = false
+        }
+    }, [])
 
     useEffect(() => {
         const fetchDetail = async () => {
@@ -63,14 +70,10 @@ function Info() {
             }
         }
 
-        isMounted.current = true
         if(userId) {
             fetchDetail()
         }
 
-        return () => {
-            isMounted.current = false
-        }
     }, [userId])
 
     const avatarUrl = detail?.profile?.avatarUrl || ''
@@ -98,20 +101,20 @@ function Info() {
         </div>
         <ul styleName="summary">
             <li>
-                <Link to="/1">
+                <Link to="/">
                     <strong>{detail?.profile?.eventCount}</strong>
                     <span>动态</span>
                 </Link>
             </li>
             <li>
-                <Link to="/1">
+                <Link to="/">
                     <strong>{detail?.profile?.follows}</strong>
                     <span>关注</span>
                 </Link>
             </li>
             <li>
-                <Link to="/1">
-                    <strong>{detail?.profile?.cCount}</strong>
+                <Link to="/">
+                    <strong>{detail?.profile?.followeds}</strong>
                     <span>粉丝</span>
                 </Link>
             </li>

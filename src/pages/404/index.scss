@@ -1,7 +1,7 @@
 
-.not-found-wrapper {
+.wrapper {
   min-width: 982px;
-  background-color: $bg-color;
+  background-color: $bg-primary-color;
 }
 
 .not-found {
@@ -10,16 +10,16 @@
   background-color: #fff;
 }
 
-.not-found-icon {
+.icon {
   display: inline-block;
   width: 270px;
   height: 112px;
   background: url(~assets/images/logo.png) no-repeat 0 -405px;
 }
 
-.not-found-note {
+.note {
   margin-top: 35px;
-  color: #666;
+  color: $font-color;
   font-size: 18px;
   font-family: "Microsoft Yahei", sans-serif;
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import {memo} from 'react'
 import PropTypes from 'prop-types'
 
 import './index.scss'
@@ -17,5 +17,5 @@ Loading.defaultProps = {
     loading: false
 }
 
-export default React.memo(Loading)
+export default memo(Loading)
 

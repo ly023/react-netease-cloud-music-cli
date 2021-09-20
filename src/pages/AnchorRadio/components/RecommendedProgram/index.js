@@ -2,7 +2,7 @@ import {useState, useEffect, useRef} from 'react'
 import {Link} from 'react-router-dom'
 import ListLoading from 'components/ListLoading'
 import Play from 'components/Play'
-import {PLAY_TYPE} from 'constants/play'
+import {PLAY_TYPE} from 'constants/music'
 import {requestRecommendation as requestRecommendProgram} from 'services/program'
 import {getThumbnail} from 'utils'
 
@@ -52,7 +52,7 @@ function RecommendedProgram() {
                             <Link styleName="program-name" to={`/program/${id}`}>{name}</Link>
                             <Link styleName="radio-name" to={`/radio/${radio?.id}`}>{radio?.name}</Link>
                         </div>
-                        <Link styleName="category" to={`/discover/radio/category?id=${radio?.categoryId}`}>{radio?.category}</Link>
+                        <Link styleName="category" to={`/discover/radio/category/${radio?.categoryId}`}>{radio?.category}</Link>
                     </li>
                 })
             }

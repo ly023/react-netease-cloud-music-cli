@@ -30,27 +30,6 @@
   }
 }
 
-.out-chain {
-  margin-top: 20px;
-  text-align: center;
-
-  i {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    overflow: hidden;
-    vertical-align: middle;
-    background-position: -34px -863px;
-
-    @extend %background-icon;
-  }
-
-  a {
-    color: #0c73c2;
-    text-decoration: underline;
-  }
-}
-
 .content {
   float: right;
   width: 414px;
@@ -124,7 +103,7 @@
   }
 
   span {
-    color: #333;
+    color: $font-primary-color;
   }
 }
 
@@ -316,7 +295,7 @@
 
 .no-lyric {
   margin-top: 13px;
-  color: #666;
+  color: $font-color;
 }
 
 .lyric {
@@ -373,7 +352,7 @@
 }
 
 .lyric-user-info {
-  color: #666;
+  color: $font-color;
 
   a {
     color: #0c73c2;

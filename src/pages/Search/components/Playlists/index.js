@@ -1,7 +1,7 @@
 import {useCallback, memo} from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
-import {PLAY_TYPE} from 'constants/play'
+import {PLAY_TYPE} from 'constants/music'
 import {PLAYLIST_COLLECTION_TYPE} from 'constants'
 import Add from 'components/Add'
 import Play from 'components/Play'
@@ -65,10 +65,10 @@ function Playlists(props) {
                         </Link>
                     }
                     <div styleName="td count">
-                        收藏: {formatNumber(item.bookCount, 5, 1)}
+                        收藏: {formatNumber(item.bookCount, 1)}
                     </div>
                     <div styleName="td count">
-                        收听: {formatNumber(item.playCount, 5, 1)}
+                        收听: {formatNumber(item.playCount, 1)}
                     </div>
                 </div>
             })
