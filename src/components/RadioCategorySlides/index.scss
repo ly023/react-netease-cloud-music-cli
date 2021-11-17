@@ -1,5 +1,5 @@
 %swiper-icon {
-  background: url(./images/radio-slide.png) no-repeat;
+  background: url("./images/radio-slide.png") no-repeat;
 }
 
 .categories {
@@ -17,7 +17,7 @@
       color: #888;
       text-align: center;
       text-decoration: none;
-      background: url(./images/radio-bg.png) no-repeat 0 9999px;
+      background: url("./images/radio-bg.png") no-repeat 0 9999px;
       cursor: pointer;
 
       &:hover {
@@ -25,7 +25,7 @@
       }
 
       &.active {
-        color: rgb(211, 87, 87);
+        color: #d35757;
         background-position: -70px 0;
 
         .icon {
@@ -55,7 +55,7 @@
       width: 20px;
       height: 20px;
       text-indent: -9999px;
-      background: url(./images/radio-slide.png) no-repeat 0 0;
+      background: url("./images/radio-slide.png") no-repeat 0 0;
       cursor: pointer;
 
       &.active,

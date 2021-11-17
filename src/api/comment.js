@@ -13,8 +13,14 @@ export default {
         url: `${config.apiHost}/comment/playlist`,
         type: 'GET'
     },
+    // mv评论，?id=5436712, limit, offset
     mv: {
         url: `${config.apiHost}/comment/mv`,
+        type: 'GET'
+    },
+    // 视频评论, ?id=89ADDE33C0AAE8EC14B99F6750DB954D, limit, offset
+    video: {
+        url: `${config.apiHost}/comment/video`,
         type: 'GET'
     },
     // 发送、删除评论
