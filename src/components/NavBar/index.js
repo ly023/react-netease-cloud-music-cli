@@ -1,4 +1,4 @@
-import React from 'react'
+import {Component, createRef} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, NavLink, Link} from 'react-router-dom'
 import emitter from 'utils/eventEmitter'
@@ -6,7 +6,7 @@ import {LOGIN_MODE} from 'constants/login'
 import LoginModal from 'components/LoginModal'
 import {setNavHeight} from 'actions/base'
 import {requestLogout} from 'services/user'
-import {getThumbnail} from 'utils'
+import {getThumbnail, deleteCookie} from 'utils'
 import SearchBar from './components/SearchBar'
 
 import styles from './index.scss'
@@ -16,7 +16,7 @@ import styles from './index.scss'
     isLogin: user.isLogin,
     userInfo: user.userInfo,
 }))
-export default class NavBar extends React.Component {
+export default class NavBar extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -24,7 +24,7 @@ export default class NavBar extends React.Component {
             loginVisible: false,
             loginMode: LOGIN_MODE.GUIDE.TYPE
         }
-        this.navRef = React.createRef()
+        this.navRef = createRef()
     }
 
     componentDidMount() {
@@ -67,6 +67,8 @@ export default class NavBar extends React.Component {
         requestLogout()
             .then((res) => {
                 if (res.code === 200) {
+                    // 删除自定义的cookie
+                    deleteCookie('CSRF')
                     window.location.href = '/'
                 }
             })
@@ -78,6 +80,8 @@ export default class NavBar extends React.Component {
             || pathname.startsWith('/song')
             || pathname.startsWith('/playlist')
             || pathname.startsWith('/album')
+            || pathname.startsWith('/mv')
+            || pathname.startsWith('/video')
             || pathname.startsWith('/artist')
             || pathname.startsWith('/radio')
             || pathname.startsWith('/program')

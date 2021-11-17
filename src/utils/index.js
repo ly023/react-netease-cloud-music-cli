@@ -4,16 +4,27 @@
  * @returns {string}
  */
 export function getCookie(name) {
-    const nameEQ = `${name}=`
-    const cookies = document.cookie.split(';')
-    for (let i = 0; i < cookies.length; i++) {
-        let cookie = cookies[i]
-        while (cookie.charAt(0) === ' ') {
-            cookie = cookie.substring(1, cookie.length)
-        }
-        if (cookie.indexOf(nameEQ) === 0) {
-            return cookie.substring(nameEQ.length, cookie.length)
-        }
+    const cookies = document.cookie.split('; ').reduce((acc, current) => {
+        const [key, value] = current.split('=')
+        acc[key] = value
+        return acc
+    }, {})
+
+    return cookies[name]
+}
+
+/**
+ * 删除cookie
+ * @param name
+ * @param path
+ * @param domain
+ */
+export function deleteCookie(name, path, domain) {
+    if (getCookie(name)) {
+        document.cookie = name + "=" +
+            ((path) ? ";path=" + path : "") +
+            ((domain) ? ";domain=" + domain : "") +
+            ";expires=Thu, 01 Jan 1970 00:00:01 GMT"
     }
 }
 
@@ -22,7 +33,7 @@ export function getCookie(name) {
  * @returns {string}
  */
 export function getCsrfToken() {
-    return getCookie('__csrf')
+    return getCookie('CSRF')
 }
 
 /**

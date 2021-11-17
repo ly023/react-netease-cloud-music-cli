@@ -102,6 +102,16 @@ export default [
         component: importPages('AlbumDetail'),
     },
     {
+        path: '/mv/:id',
+        name: 'MV详情',
+        component: importPages('MVDetail'),
+    },
+    {
+        path: '/video/:id',
+        name: '视频详情',
+        component: importPages('VideoDetail'),
+    },
+    {
         path: '/radio/:id',
         name: '电台详情',
         component: importPages('RadioDetail'),
