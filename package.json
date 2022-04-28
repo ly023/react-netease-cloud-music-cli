@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@loadable/component": "^5.15.0",
-    "cross-fetch": "^3.1.4",
+    "cross-fetch": "^3.1.5",
     "dayjs": "^1.10.7",
     "dom-css": "^2.1.0",
     "lodash": "^4.17.21",
