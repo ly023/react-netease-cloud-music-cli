@@ -1,0 +1,197 @@
+.table {
+  width: 100%;
+  table-layout: fixed;
+  border: 1px solid #d9d9d9;
+  border-collapse: collapse;
+  border-spacing: 0;
+
+  th {
+    height: 38px;
+    vertical-align: top;
+    background-color: $bg-color;
+    background-repeat: repeat-x;
+    background-position: 0 0;
+
+    @extend %background-table;
+
+    &.w1 {
+      width: 74px;
+    }
+
+    &.w2 {
+      width: 236px;
+    }
+
+    &.w3 {
+      width: 110px;
+    }
+
+    &.w4 {
+      width: 90px;
+    }
+
+    &.w5 {
+      width: 20%;
+    }
+
+    .th {
+      height: 18px;
+      padding: 8px 10px;
+      color: $font-color;
+      font-weight: 400;
+      line-height: 18px;
+      text-align: left;
+      background-position: 0 -56px;
+
+      @extend %background-table;
+
+      &.first {
+        background: none;
+      }
+    }
+  }
+
+  td {
+    height: 18px;
+    padding: 6px 10px;
+    line-height: 18px;
+  }
+
+  .even {
+    td {
+      background-color: $bg-color;
+    }
+  }
+
+  .track {
+    color: $font-primary-color;
+
+    &.disabled * {
+      color: #bbb;
+    }
+
+    &.disabled:hover {
+      .duration {
+        color: #bbb;
+
+        .time {
+          display: inline-block;
+        }
+
+        .actions {
+          display: none;
+        }
+      }
+    }
+
+    &:hover {
+      .duration {
+        .time {
+          display: none;
+        }
+
+        .actions {
+          display: inline-block;
+        }
+      }
+
+      .album {
+        .dislike {
+          display: inline-block;
+        }
+      }
+    }
+
+    .order {
+      color: #999;
+
+      .number {
+        margin-left: 5px;
+      }
+
+      .new {
+        display: inline-block;
+        width: 16px;
+        height: 17px;
+        margin: 0 8px 0 16px;
+        vertical-align: middle;
+        background-position: -67px -283px;
+
+        @extend %background-icon;
+      }
+
+      .play {
+        float: right;
+        height: 17px;
+        line-height: 15px;
+      }
+    }
+
+    .name {
+      width: 100%;
+
+      @extend %text-ellipsis;
+
+      .alias {
+        color: #aeaeae;
+      }
+
+      .mv-icon {
+        display: inline-block;
+        width: 23px;
+        height: 17px;
+        margin: 0 0 0 4px;
+        vertical-align: middle;
+        background-position: 0 -151px;
+        cursor: pointer;
+
+        @extend %background-table;
+
+        &:hover {
+          background-position: -30px -151px;
+        }
+      }
+    }
+
+    .duration {
+      color: $font-color;
+
+      .actions {
+        display: none;
+        cursor: pointer;
+      }
+    }
+
+    .artists {
+      @extend %text-ellipsis;
+    }
+
+    .album {
+      position: relative;
+
+      a {
+        display: inline-block;
+        width: 90%;
+
+        @extend %text-ellipsis;
+      }
+
+      .dislike {
+        position: absolute;
+        top: 10px;
+        right: 8px;
+        display: none;
+        width: 10px;
+        height: 10px;
+        background-position: -75px -352px;
+        cursor: pointer;
+
+        @extend %background-icon;
+
+        &:hover {
+          background-position: -75px -365px;
+        }
+      }
+    }
+  }
+}

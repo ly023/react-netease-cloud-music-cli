@@ -2,13 +2,13 @@
  * 视频详情页
  */
 import {useEffect, useState, useCallback, useMemo, useRef, Fragment} from 'react'
-import {Link, useHistory} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {requestDetail, requestVideoUrl, requestInfo, requestSimilar} from 'services/video'
 import Page from 'components/Page'
 import CustomPlayer from 'components/CustomPlayer'
-import Comments from 'components/Comments'
-import ClientDownload from 'components/ClientDownload'
-import LikeResource from 'components/LikeResource'
+import Comments from 'components/business/Comments'
+import ClientDownload from 'components/business/ClientDownload'
+import LikeResource from 'components/business/LikeResource'
 import {RESOURCE_TYPE} from 'constants'
 import {formatDuration, formatNumber, formatTimestamp, getThumbnail} from 'utils'
 // import SubscribeVideo from './components/SubscribeVideo'
@@ -16,9 +16,9 @@ import {formatDuration, formatNumber, formatTimestamp, getThumbnail} from 'utils
 import './index.scss'
 
 function VideoDetail(props) {
-    const history = useHistory()
+    const navigate = useNavigate()
 
-    const videoId = props.match?.params?.id
+    const videoId = props.params?.id
 
     const [detail, setDetail] = useState(null)
     const [resources, setResource] = useState([])
@@ -52,7 +52,7 @@ function VideoDetail(props) {
                         fetchVideoUrls(definitions)
                     }
                 } else if (res?.code === 404) {
-                    history.push('/404')
+                    navigate('/404')
                 }
             }
         }
@@ -95,17 +95,17 @@ function VideoDetail(props) {
         }
     }, [])
 
-    const setCommentsRef = useCallback((ref) => {
+    const setCommentsRef = (ref) => {
         commentsRef.current = ref
-    }, [])
+    }
 
-    const handleLikedSuccess = useCallback((status) => {
+    const handleLikedSuccess = (status) => {
         setInfo({
             ...info,
             liked: status,
             likedCount: status ? ++info.likedCount : --info.likedCount
         })
-    }, [info])
+    }
 
     // const handleSubscribeSuccess = useCallback((status) => {
     //     setDetail({

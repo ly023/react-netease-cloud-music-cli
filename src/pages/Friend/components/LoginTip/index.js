@@ -1,11 +1,10 @@
-import {useCallback} from 'react'
-import emitter from 'utils/eventEmitter'
+import pubsub from 'utils/pubsub'
 import './index.scss'
 
 function LoginTip() {
-    const handleLogin = useCallback(() => {
-        emitter.emit('login')
-    }, [])
+    const handleLogin = () => {
+        pubsub.publish('login')
+    }
 
     return <div className="main">
         <div styleName="wrapper">

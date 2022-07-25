@@ -2,18 +2,19 @@
  * 用户主页
  */
 import {useEffect, useState, useCallback, useMemo, useRef} from 'react'
-import {Link, useHistory} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {throttle} from 'lodash'
+import withRouter from 'hoc/withRouter'
 import useShallowEqualSelector from 'utils/useShallowEqualSelector'
 import {requestDetail as requestUserDetail, requestPlaylist, requestRadios} from 'services/user'
 import {DEFAULT_AVATAR, DEFAULT_DOCUMENT_TITLE} from 'constants'
 import {USER_AUTH_TYPE} from 'constants/user'
 import Page from 'components/Page'
-import GenderIcon from 'components/GenderIcon'
-import RankingList from 'components/ListenMusicRankingList'
+import GenderIcon from 'components/business/GenderIcon'
+import RankingList from 'components/business/ListenMusicRankingList'
 import SubTitle from 'components/SubTitle'
 import ListLoading from 'components/ListLoading'
-import PlaylistItem from 'components/PlaylistItem'
+import PlaylistItem from 'components/business/PlaylistItem'
 import {getThumbnail, isEndReached} from 'utils'
 
 import './index.scss'
@@ -28,7 +29,7 @@ function getDefaultParams() {
 }
 
 function UserHome(props) {
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const {isLogin, userInfo} = useShallowEqualSelector(({user}) => ({
         isLogin: user.isLogin,
@@ -47,9 +48,9 @@ function UserHome(props) {
 
     const playlistRef = useRef()
 
-    const userId = Number(props.match?.params?.id)
+    const userId = Number(props.params?.id)
 
-    const isSelf = useMemo(() => isLogin && userInfo?.userId === userId, [isLogin, userInfo, userId])
+    const isSelf = isLogin && userInfo?.userId === userId
 
     const fetchRadios = useCallback(async () => {
         const res = await requestRadios({uid: userId})
@@ -102,11 +103,11 @@ function UserHome(props) {
         }
     }, [fetchPlaylists, more, params])
 
-    const resetData = useCallback(() => {
+    const resetData = () => {
         setMore(false)
         setCreatedPlaylists([])
         setCollectedPlaylists([])
-    }, [])
+    }
 
     useEffect(() => {
         isMounted.current = true
@@ -141,7 +142,7 @@ function UserHome(props) {
             } catch (e) {
                 const code = e?.responseJson?.code
                 if (code === 404) {
-                    history.push('/404')
+                    navigate('/404')
                 }
             }
         }
@@ -152,9 +153,9 @@ function UserHome(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userId])
 
-    const identify = useMemo(() => userDetail?.identify, [userDetail])
+    const identify = userDetail?.identify
 
-    const profile = useMemo(() => userDetail?.profile, [userDetail])
+    const profile = userDetail?.profile
 
     const nickname = profile?.nickname || ''
 
@@ -176,7 +177,7 @@ function UserHome(props) {
 
     }, [userDetail, isSelf, profile])
 
-    const renderRadios = useCallback(() => {
+    const renderRadios = useMemo(() => {
         return <ul styleName="radios">
             {
                 radios.map((radio, index) => {
@@ -274,7 +275,7 @@ function UserHome(props) {
                 {
                     radios.length ? <div className="clearfix">
                         <SubTitle title={<span styleName="subtitle">{playlistSubtitlePrefix}创建的电台</span>}/>
-                        {renderRadios(radios)}
+                        {renderRadios}
                     </div> : null
                 }
                 {
@@ -310,4 +311,4 @@ function UserHome(props) {
     </Page>
 }
 
-export default UserHome
+export default withRouter(UserHome)

@@ -2,24 +2,25 @@
  * 专辑详情页
  */
 import {Component} from 'react'
-import {withRouter, Link} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import dayjs from 'dayjs'
+import withRouter from 'hoc/withRouter'
 import Page from 'components/Page'
-import Comments from 'components/Comments'
+import Comments from 'components/business/Comments'
 import {DATE_FORMAT, DEFAULT_DOCUMENT_TITLE} from 'constants'
 import {PLAY_TYPE} from 'constants/music'
-import Add from 'components/Add'
-import Play from 'components/Play'
-import AddToPlaylist from 'components/AddToPlaylist'
+import Add from 'components/business/Add'
+import Play from 'components/business/Play'
+import AddToPlaylist from 'components/business/AddToPlaylist'
 import {requestDetail} from 'services/album'
 import {requestAlbum} from 'services/artist'
 import {formatDuration, formatNumber, getThumbnail} from 'utils'
-import emitter from 'utils/eventEmitter'
+import pubsub from 'utils/pubsub'
 import Collapse from 'components/Collapse'
-import SongActions from 'components/SongActions'
-import ClientDownload from 'components/ClientDownload'
-import SinglePlay from 'components/SinglePlay'
+import SinglePlay from 'components/business/SinglePlay'
+import SongActions from 'components/business/SongActions'
+import ClientDownload from 'components/business/ClientDownload'
 import {getArtists} from 'utils/song'
 
 import './index.scss'
@@ -29,7 +30,7 @@ import './index.scss'
     isLogin: user.isLogin,
     currentSong: user.player.currentSong
 }))
-export default class AlbumDetail extends Component {
+class AlbumDetail extends Component {
     constructor(props) {
         super(props)
         this.state = this.getInitialState()
@@ -48,7 +49,7 @@ export default class AlbumDetail extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.match.params.id !== prevProps.match.params.id) {
+        if (this.props.params.id !== prevProps.params.id) {
             this.setState(this.getInitialState())
             this.fetchData()
         }
@@ -59,7 +60,7 @@ export default class AlbumDetail extends Component {
     }
 
     fetchData = () => {
-        const {id} = this.props.match.params
+        const {id} = this.props.params
         if (id) {
             this.fetchDetail(id)
         }
@@ -100,7 +101,7 @@ export default class AlbumDetail extends Component {
         if (isLogin) {
             return true
         }
-        emitter.emit('login')
+        pubsub.publish('login')
         return false
     }
 
@@ -269,14 +270,14 @@ export default class AlbumDetail extends Component {
                             <Comments
                                 onRef={this.setCommentsRef}
                                 type="ALBUM"
-                                id={Number(this.props.match.params.id)}
+                                id={Number(this.props.params.id)}
                             />
                         </div>
                     </div>
                     <div className="right-wrapper">
                         {/* todo 喜欢这张专辑的人 */}
                         <div styleName="other-albums">
-                            <h3 styleName="album-title">他的其他热门专辑</h3>
+                            <h3 styleName="album-title">Ta的其他热门专辑</h3>
                             <ul>
                                 {
                                     albums.map((item) => {
@@ -302,3 +303,5 @@ export default class AlbumDetail extends Component {
         )
     }
 }
+
+export default AlbumDetail

@@ -1,4 +1,4 @@
-import {Redirect} from 'react-router-dom'
+import {Navigate} from 'react-router-dom'
 import loadable from '@loadable/component'
 // import PageLoading from 'components/PageLoading'
 
@@ -8,7 +8,9 @@ import loadable from '@loadable/component'
 // const importViews = file => loadable(() => import(`pages/${file}`))
 
 function importPages(filename) {
-    return loadable(() => import(`pages/${filename}`), {
+    // webpackChunkName 重定义chunkName 清楚是哪个路由的文件
+    return loadable(() => import(/* webpackChunkName: "[request]" */`pages/${filename}`), {
+    // return loadable(() => import(`pages/${filename}`), {
         // fallback: <PageLoading/>,
     })
 }
@@ -17,55 +19,46 @@ export default [
     {
         path: '/',
         name: '首页',
-        exact: true,
-        component: () => <Redirect to={'/discover'}/>
+        component: () => <Navigate to={'/discover'}/>
     },
     {
         path: '/discover',
         name: '发现',
-        exact: true,
         component: importPages('Discover'),
     },
     {
         path: '/discover/playlist',
         name: '发现-歌单',
-        exact: true,
         component: importPages('Playlist'),
     },
     {
         path: '/discover/radio',
         name: '发现-主播电台',
-        exact: true,
         component: importPages('AnchorRadio'),
     },
     {
         path: '/discover/radio/category/:id',
         name: '发现-主播电台-分类',
-        exact: true,
         component: importPages('AnchorRadioType'),
     },
     {
         path: '/discover/radio/recommend',
         name: '发现-主播电台-推荐节目',
-        exact: true,
         component: importPages('AnchorRadioRecommendation'),
     },
     {
         path: '/discover/radio/rank',
         name: '发现-主播电台-节目排行榜',
-        exact: true,
         component: importPages('ProgramRank'),
     },
     {
         path: '/discover/album',
         name: '发现-新碟上架',
-        exact: true,
         component: importPages('Album'),
     },
     {
         path: '/discover/recommend/daily',
         name: '发现-每日歌曲推荐',
-        exact: true,
         meta: {
             requiresAuth: true
         },
@@ -78,7 +71,7 @@ export default [
     },
     {
         path: '/friend',
-        name: '朋友',
+        name: '关注',
         component: importPages('Friend'),
     },
     {
@@ -129,13 +122,11 @@ export default [
     {
         path: '/my/music',
         name: '我的音乐',
-        exact: true,
-        component: () => <Redirect to={'/my/music/playlist/:id'}/>
+        component: () => <Navigate to={'/my/music/playlist/:id'}/>
     },
     {
         path: '/my/music/playlist/:id',
         name: '我创建的歌单',
-        exact: true,
         component: importPages('MyPlaylist'),
     },
     {

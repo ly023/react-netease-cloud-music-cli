@@ -1,10 +1,10 @@
-import {useState, useEffect, useCallback, useMemo, useRef} from 'react'
+import {useState, useEffect, useMemo, useRef} from 'react'
 import Page from 'components/Page'
-import SongTable from 'components/SongTable'
-import Play from 'components/Play'
-import Add from 'components/Add'
-import AddToPlaylist from 'components/AddToPlaylist'
-import ClientDownload from 'components/ClientDownload'
+import Add from 'components/business/Add'
+import Play from 'components/business/Play'
+import AddToPlaylist from 'components/business/AddToPlaylist'
+import SongTable from 'components/business/SongTable'
+import ClientDownload from 'components/business/ClientDownload'
 import {DEFAULT_DOCUMENT_TITLE} from 'constants'
 import {PLAY_TYPE} from 'constants/music'
 import {requestRcmdSongs} from 'services/rcmd'
@@ -57,9 +57,9 @@ function DailyRecommendation() {
         }
     }, [userInfo])
 
-    const handleDislikeSuccess = useCallback((songs) => {
+    const handleDislikeSuccess = (songs) => {
         setSongs(songs || [])
-    }, [])
+    }
 
     const documentTitle = useMemo(() => `每日歌曲推荐 - ${DEFAULT_DOCUMENT_TITLE}`, [])
 

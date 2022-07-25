@@ -1,12 +1,13 @@
 /**
  * 歌手详情页
  */
-import {useEffect, useState, useCallback, useMemo, useRef} from 'react'
-import {Link, useHistory, useLocation} from 'react-router-dom'
+import {useEffect, useState, useMemo, useRef} from 'react'
+import {Link, useNavigate, useLocation} from 'react-router-dom'
+import withRouter from 'hoc/withRouter'
 import {requestDetail} from 'services/artist'
 import Page from 'components/Page'
 import Tabs from 'components/Tabs'
-import ClientDownload from 'components/ClientDownload'
+import ClientDownload from 'components/business/ClientDownload'
 import {getThumbnail, getUrlParameter} from 'utils'
 import {DEFAULT_DOCUMENT_TITLE} from 'constants'
 import Top from './components/Top'
@@ -20,10 +21,10 @@ import './index.scss'
 const TOP_TAB_KEY = 'top'
 
 function ArtistDetail(props) {
-    const history = useHistory()
+    const navigate = useNavigate()
     const {pathname, search} = useLocation()
 
-    const artistId = Number(props.match?.params?.id)
+    const artistId = Number(props.params?.id)
 
     const [detail, setDetail] = useState(null)
     const [activeTabKey, setActiveTabKey] = useState(TOP_TAB_KEY)
@@ -52,7 +53,7 @@ function ArtistDetail(props) {
                     if (res?.code === 200) {
                         setDetail(res?.data)
                     } else if (res?.code === 404) {
-                        history.push('/404')
+                        navigate('/404')
                     }
                 }
             } finally {
@@ -65,9 +66,9 @@ function ArtistDetail(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [artistId])
 
-    const handleTabChange = useCallback((key) => {
-        history.push(`${pathname}?tab=${key}`)
-    }, [history, pathname])
+    const handleTabChange = (key) => {
+        navigate(`${pathname}?tab=${key}`)
+    }
 
     const artist = detail?.artist
 
@@ -129,4 +130,4 @@ function ArtistDetail(props) {
     </Page>
 }
 
-export default ArtistDetail
+export default withRouter(ArtistDetail)

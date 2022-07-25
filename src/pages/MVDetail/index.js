@@ -1,24 +1,25 @@
 /**
  * MV详情页
  */
-import {useEffect, useState, useCallback, useMemo, useRef} from 'react'
-import {Link, useHistory} from 'react-router-dom'
+import {useEffect, useState, useMemo, useRef} from 'react'
+import {Link, useNavigate, useParams} from 'react-router-dom'
 import {requestDetail, requestVideoUrl, requestInfo, requestSimilar} from 'services/mv'
 import Page from 'components/Page'
 import CustomPlayer from 'components/CustomPlayer'
-import Comments from 'components/Comments'
-import ClientDownload from 'components/ClientDownload'
-import LikeResource from 'components/LikeResource'
+import Comments from 'components/business/Comments'
+import ClientDownload from 'components/business/ClientDownload'
+import LikeResource from 'components/business/LikeResource'
 import {RESOURCE_TYPE} from 'constants'
 import {formatDuration, getThumbnail} from 'utils'
 import SubscribeMV from './components/SubscribeMV'
 
 import './index.scss'
 
-function MVDetail(props) {
-    const history = useHistory()
+function MVDetail() {
+    const navigate = useNavigate()
+    const urlParams = useParams()
 
-    const mvId = Number(props.match?.params?.id)
+    const mvId = Number(urlParams?.id)
 
     const [detail, setDetail] = useState(null)
     const [resources, setResource] = useState([])
@@ -56,7 +57,7 @@ function MVDetail(props) {
                         fetchVideoUrls(definitions)
                     }
                 } else if (res?.code === 404) {
-                    history.push('/404')
+                    navigate('/404')
                 }
             }
         }
@@ -99,25 +100,25 @@ function MVDetail(props) {
         }
     }, [])
 
-    const setCommentsRef = useCallback((ref) => {
+    const setCommentsRef = (ref) => {
         commentsRef.current = ref
-    }, [])
+    }
 
-    const handleLikedSuccess = useCallback((status) => {
+    const handleLikedSuccess = (status) => {
         setInfo({
             ...info,
             liked: status,
             likedCount: status ? ++info.likedCount : --info.likedCount
         })
-    }, [info])
+    }
 
-    const handleSubscribeSuccess = useCallback((status) => {
+    const handleSubscribeSuccess = (status) => {
         setDetail({
             ...detail,
             subed: status,
             subCount: status ? ++detail.subCount : --detail.subCount,
         })
-    }, [detail])
+    }
 
     const renderMVs = useMemo(() => {
         return <ul styleName="mvs">

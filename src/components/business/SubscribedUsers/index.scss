@@ -1,0 +1,17 @@
+.list {
+  margin-left: -13px;
+  padding-bottom: 25px;
+
+  .title {
+    @extend %title-underline-h3;
+
+    font-family: "Microsoft Yahei", Arial, Helvetica, sans-serif;
+  }
+
+  .avatar {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    padding: 0 0 13px 13px;
+  }
+}

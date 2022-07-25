@@ -1,12 +1,12 @@
-import {useState, useEffect, useCallback, useRef, memo} from 'react'
+import {useState, useEffect, useRef, memo} from 'react'
 import {Link} from 'react-router-dom'
 import {DEFAULT_AVATAR} from 'constants'
-import emitter from 'utils/eventEmitter'
+import pubsub from 'utils/pubsub'
 import useShallowEqualSelector from 'utils/useShallowEqualSelector'
 import {requestDetail, requestDailySignIn} from 'services/user'
+import message from 'components/Message'
 
 import './index.scss'
-import message from "components/Message";
 
 function Info() {
     const {isLogin, userInfo: {userId}} = useShallowEqualSelector(({user}) => ({isLogin: user.isLogin, userInfo: user.userInfo}))
@@ -51,9 +51,9 @@ function Info() {
             })
     }
 
-    const handleLogin = useCallback(() => {
-        emitter.emit('login')
-    }, [])
+    const handleLogin = () => {
+        pubsub.publish('login')
+    }
 
     useEffect(() => {
         isMounted.current = true

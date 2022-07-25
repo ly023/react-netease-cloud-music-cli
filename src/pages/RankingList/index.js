@@ -1,5 +1,5 @@
 import {useState, useEffect, useCallback, useMemo, useRef} from 'react'
-import {Link, useHistory} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import dayjs from 'dayjs'
 import Page from 'components/Page'
 import {DEFAULT_DOCUMENT_TITLE} from 'constants'
@@ -7,19 +7,19 @@ import {requestAllTopList} from 'services/toplist'
 import {requestDetail as requestPlaylistDetail} from 'services/playlist'
 import useShallowEqualSelector from 'utils/useShallowEqualSelector'
 import {formatNumber, getThumbnail, getUrlParameter} from 'utils'
-import emitter from 'utils/eventEmitter'
+import pubsub from 'utils/pubsub'
 import {parseSongs} from 'utils/song'
-import Play from 'components/Play'
 import {PLAY_TYPE} from 'constants/music'
-import Add from 'components/Add'
-import Comments from 'components/Comments'
+import Add from 'components/business/Add'
+import Play from 'components/business/Play'
+import Comments from 'components/business/Comments'
 import ListLoading from 'components/ListLoading'
 import SongTable from './components/SongTable'
 
 import './index.scss'
 
 function RankingList() {
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const {userInfo, isLogin} = useShallowEqualSelector(({user}) => ({
         userInfo: user.userInfo,
@@ -96,9 +96,9 @@ function RankingList() {
         const {id} = item
         const url = `/discover/toplist?id=${id}`
         setCurrentRank(item)
-        history.push(url)
+        navigate(url)
         fetchPlaylistDetail(id)
-    }, [history, fetchPlaylistDetail])
+    }, [navigate, fetchPlaylistDetail])
 
     const renderRankingList = useCallback((data) => {
         if (Array.isArray(data) && data.length) {
@@ -127,23 +127,23 @@ function RankingList() {
         }
     }, [handleSelect, currentRank?.id])
 
-    const setCommentsRef = useCallback((ref) => {
+    const setCommentsRef = (ref) => {
         commentsRef.current = ref
-    }, [])
+    }
 
     const validateLogin = useCallback(() => {
         if (isLogin) {
             return true
         }
-        emitter.emit('login')
+        pubsub.publish('login')
         return false
     }, [isLogin])
 
-    const handleComment = useCallback(() => {
+    const handleComment = () => {
         if (validateLogin()) {
             commentsRef.current.focusEditor()
         }
-    }, [validateLogin])
+    }
 
     const songs = useMemo(() => parseSongs(detail?.tracks), [detail])
 

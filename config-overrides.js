@@ -8,32 +8,11 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const apiMocker = require('mocker-api');
-const {interpolateName} = require('loader-utils');
 
-const CSS_MODULE_LOCAL_IDENT_NAME = '[folder]-[local]-[hash:base64:5]'
+const CSS_MODULE_LOCAL_IDENT_NAME = '[folder]-[local]-[hash:base64:5]';
 
 function resolve(dir) {
     return path.join(__dirname, '.', dir)
-}
-
-function generateScopedName(pattern) {
-    const context = process.cwd();
-    return function generate(localName, filepath) {
-        const name = pattern.replace(/\[local\]/gi, localName);
-        const loaderContext = {
-            resourcePath: filepath,
-        };
-
-        const loaderOptions = {
-            content: `${path.relative(context, filepath).replace(/\\/g, '/')}\u0000${localName}`,
-            context,
-        };
-
-        const genericName = interpolateName(loaderContext, name, loaderOptions);
-        return genericName
-            .replace(new RegExp('[^a-zA-Z0-9\\-_\u00A0-\uFFFF]', 'g'), '-')
-            .replace(/^((-?[0-9])|--)/, '_$1');
-    };
 }
 
 const changeModuleRules = () => config => {
@@ -49,18 +28,23 @@ const changeModuleRules = () => config => {
 const devServerConfig = () => config => {
     return {
         ...config,
+        client: {
+            overlay: false, // https://webpack.docschina.org/configuration/dev-server/#overlay
+        },
         hot: true,
-        before(app) {
+        port: config.port,
+        historyApiFallback: true,
+        onBeforeSetupMiddleware: function ({app}) {
             apiMocker(app, path.resolve('src/mock/index.js'))
         },
         proxy: {
             '/base': {
-                target: 'http://localhost:5000',
+                target: 'http://localhost:5023',
                 pathRewrite: {'^/base': ''},
                 changeOrigin: true,     // target是域名的话，需要这个参数，
                 secure: false,          // 设置支持https协议的代理
             },
-        }
+        },
     }
 }
 
@@ -71,19 +55,24 @@ module.exports = {
 
         addBabelPlugins(
             "@babel/plugin-proposal-optional-chaining",
-            [
-                "react-css-modules",
-                {
-                    "filetypes": {
-                        ".scss": {
-                            "syntax": "postcss-scss"
-                        }
-                    },
-                    "exclude": "node_modules",
-                    "generateScopedName": generateScopedName(CSS_MODULE_LOCAL_IDENT_NAME),
-                    "autoResolveMultipleImports": true
-                }
-            ],
+            // [
+            //     "react-css-modules",
+            //     {
+            //         "filetypes": {
+            //             ".scss": {
+            //                 "syntax": "postcss-scss"
+            //             }
+            //         },
+            //         "exclude": "node_modules",
+            //         "generateScopedName": CSS_MODULE_LOCAL_IDENT_NAME,
+            //         "autoResolveMultipleImports": true
+            //     }
+            // ],
+            ["@dr.pogodin/react-css-modules", {
+                "exclude": "node_modules",
+                "generateScopedName": CSS_MODULE_LOCAL_IDENT_NAME,
+                "autoResolveMultipleImports": true
+            }],
             "lodash"
         ),
 

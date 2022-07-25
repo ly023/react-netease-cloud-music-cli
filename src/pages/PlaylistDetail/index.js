@@ -2,14 +2,14 @@
  * 歌单详情页
  */
 import {Component} from 'react'
-import {withRouter} from 'react-router-dom'
+import withRouter from 'hoc/withRouter'
 import Page from 'components/Page'
 import {DEFAULT_DOCUMENT_TITLE} from 'constants'
 import {requestRelated} from 'services/playlist'
-import PlaylistDetail from 'components/PlaylistDetail'
-import SubscribedUsers from 'components/SubscribedUsers'
-import RelatedPlaylists from 'components/RelatedPlaylists'
-import ClientDownload from 'components/ClientDownload'
+import PlaylistDetail from 'components/business/PlaylistDetail'
+import SubscribedUsers from 'components/business/SubscribedUsers'
+import RelatedPlaylists from 'components/business/RelatedPlaylists'
+import ClientDownload from 'components/business/ClientDownload'
 
 import './index.scss'
 
@@ -33,7 +33,7 @@ export default class PlaylistDetailPage extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.match.params.id !== prevProps.match.params.id) {
+        if (this.props.params.id !== prevProps.params.id) {
             this.setState(this.getInitialState())
             this.fetchData()
         }
@@ -44,7 +44,7 @@ export default class PlaylistDetailPage extends Component {
     }
 
     fetchData = () => {
-        const {id} = this.props.match.params
+        const {id} = this.props.params
         if (id) {
             this.fetchRelated(id)
         }
@@ -70,7 +70,7 @@ export default class PlaylistDetailPage extends Component {
 
         const title = detail ? `${detail?.name || ''} - 歌单 - ${DEFAULT_DOCUMENT_TITLE}` : DEFAULT_DOCUMENT_TITLE
 
-        const playlistId = Number(this.props.match?.params?.id)
+        const playlistId = Number(this.props.params?.id)
 
         return (
             <Page title={title}>

@@ -1,5 +1,5 @@
 import React from 'react'
-import Routes from 'router'
+import Routes from 'src/router'
 import ScrollToTop from './components/scrollToTop'
 
 import './index.scss'

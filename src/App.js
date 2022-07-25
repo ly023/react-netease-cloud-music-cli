@@ -6,7 +6,7 @@ import {requestLoginStatus} from 'actions/user'
 import NavBar from 'components/NavBar'
 import PlayBar from 'components/PlayBar'
 import Routes from 'router'
-import KEY_CODE from 'constants/keyCode'
+import KEY from 'constants/keyboardEventKey'
 import {getCsrfToken} from 'utils'
 import ScrollToTop from 'utils/scrollToTop'
 
@@ -42,7 +42,7 @@ function App() {
 
         const disableTabKey = () => {
             document.addEventListener('keydown', function (e) {
-                if (e.keyCode === KEY_CODE.TAB) {
+                if (e.key === KEY.TAB) {
                     e.preventDefault()
                 }
             })

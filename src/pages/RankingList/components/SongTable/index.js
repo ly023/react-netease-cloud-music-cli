@@ -2,9 +2,9 @@ import {memo} from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import ListLoading from 'components/ListLoading'
-import SongActions from 'components/SongActions'
-import SinglePlay from 'components/SinglePlay'
-import {formatDuration} from 'utils'
+import SinglePlay from 'components/business/SinglePlay'
+import SongActions from 'components/business/SongActions'
+import {formatDuration, getThumbnail} from 'utils'
 import {getArtists} from 'utils/song'
 import useShallowEqualSelector from 'utils/useShallowEqualSelector'
 
@@ -48,7 +48,7 @@ function SongTable(props) {
                             <span styleName="number">{order}</span>
                         </td>
                         <td>
-                            {isTop ? <img src={album?.picUrl} styleName="album-cover" alt=""/> : null}
+                            {isTop ? <img src={getThumbnail(album?.picUrl, 50)} styleName="album-cover" alt=""/> : null}
                             <SinglePlay id={id} active={currentSong?.id === id} disabled={disabled}/>
                             <div styleName={`name ${isTop ? 'top' : ''}`}>
                                 <Link to={`/song/${id}`} title={item.name}>{item.name}</Link>

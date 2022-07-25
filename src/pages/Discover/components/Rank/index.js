@@ -4,11 +4,11 @@
 import {useState, useEffect, useCallback, useRef, memo} from 'react'
 import {Link} from 'react-router-dom'
 import {cloneDeep} from 'lodash'
-import Add from 'components/Add'
-import Play from 'components/Play'
+import Add from 'components/business/Add'
+import Play from 'components/business/Play'
 import ListLoading from 'components/ListLoading'
-import SubscribePlaylist from 'components/SubscribePlaylist'
-import AddToPlaylist from 'components/AddToPlaylist'
+import SubscribePlaylist from 'components/business/SubscribePlaylist'
+import AddToPlaylist from 'components/business/AddToPlaylist'
 import {PLAYLIST_COLLECTION_TYPE} from 'constants'
 import {PLAY_TYPE} from 'constants/music'
 import {requestRankList} from 'services/toplist'
@@ -17,8 +17,8 @@ import {getThumbnail} from 'utils'
 import './index.scss'
 
 function Rank() {
-    const [loading, setLoading] = useState([])
-    const [rankList, setRankList] = useState(Array.from(new Array(3)))
+    const [loading, setLoading] = useState(false)
+    const [rankList, setRankList] = useState([])
     const isMounted = useRef(false)
 
     useEffect(() => {
@@ -109,7 +109,7 @@ function Rank() {
                                             styleName={`item${no % 2 === 1 ? ' item-event' : ''}`}>
                                             <span
                                                 styleName={`no ${no <= 3 ? 'no-top' : ''}`}>{no}</span>
-                                            <Link to={`song/${id}`}
+                                            <Link to={`/song/${id}`}
                                                 styleName='item-name'>{name}</Link>
                                             <div styleName='item-operation'>
                                                 <Play

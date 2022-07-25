@@ -1,39 +1,31 @@
 import {useState, useEffect, useCallback, useMemo, useRef} from 'react'
-import {Link, useHistory, useLocation} from 'react-router-dom'
+import {Link, useNavigate, useLocation} from 'react-router-dom'
 import {stringify} from 'qs'
 import Page from 'components/Page'
 import ListLoading from 'components/ListLoading'
-import AlbumItem from 'components/AlbumItem'
 import Empty from 'components/Empty'
 import Pagination from 'components/Pagination'
+import AlbumItem from 'components/business/AlbumItem'
 import {DEFAULT_DOCUMENT_TITLE} from 'constants'
 import {requestNewestAlbum, requestAllNewAlbum} from 'services/album'
-import {getUrlParameter} from 'utils'
+import {getUrlParameter, getUrlPage} from 'utils'
 
 import './index.scss'
 
 const DEFAULT_LIMIT = 35
 
 function Album() {
-    const history = useHistory()
+    const navigate = useNavigate()
     const {pathname, search} = useLocation()
     const [newestAlbum, setNewestAlbum] = useState([])
     const [allNewAlbum, setAllNewAlbum] = useState([])
     const isMounted = useRef(false)
     const listWrapperRef = useRef()
 
-    const getPage = useCallback(() => {
-        const page = getUrlParameter('page')
-        if (/^\+?[1-9][0-9]*$/.test(page)) {
-            return Number(page)
-        }
-        return 1
-    }, [])
-
     const [params, setParams] = useState({
         area: getUrlParameter('area'),
         limit: DEFAULT_LIMIT,
-        offset: (getPage() - 1) * DEFAULT_LIMIT
+        offset: (getUrlPage() - 1) * DEFAULT_LIMIT
     })
     const [current, setCurrent] = useState(0)
     const [total, setTotal] = useState(0)
@@ -66,7 +58,7 @@ function Album() {
 
     const fetchAllNewAlbum = useCallback(async () => {
         setTopLoading(true)
-        const page = getPage()
+        const page = getUrlPage()
         const query = {
             ...params,
             area: getUrlParameter('area') || 'ALL',
@@ -95,9 +87,9 @@ function Album() {
             area: getUrlParameter('area') || undefined,
             page
         }, {addQueryPrefix: true})}`
-        history.push(url)
+        navigate(url)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [history, params, pathname])
+    }, [navigate, params, pathname])
 
     useEffect(()=>{
         fetchAllNewAlbum()

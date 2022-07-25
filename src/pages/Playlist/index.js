@@ -2,16 +2,16 @@
  * 发现音乐-歌单
  */
 import {useState, useEffect, useMemo, useCallback, useRef} from 'react'
-import {Link, useHistory, useLocation} from 'react-router-dom'
+import {Link, useNavigate, useLocation} from 'react-router-dom'
 import {stringify} from 'qs'
 import Page from 'components/Page'
 import ListLoading from 'components/ListLoading'
 import Empty from 'components/Empty'
 import Pagination from 'components/Pagination'
-import PlaylistItem from 'components/PlaylistItem'
+import PlaylistItem from 'components/business/PlaylistItem'
 import {DEFAULT_DOCUMENT_TITLE} from 'constants'
 import {requestTop} from 'services/playlist'
-import {getUrlParameter} from 'utils'
+import {getUrlParameter, getUrlPage} from 'utils'
 import Categories from './components/Categories'
 
 import './index.scss'
@@ -19,7 +19,7 @@ import './index.scss'
 const DEFAULT_LIMIT = 35
 
 function Playlist() {
-    const history = useHistory()
+    const navigate = useNavigate()
     const {pathname, search} = useLocation()
     const [current, setCurrent] = useState(0)
     const [total, setTotal] = useState(0)
@@ -29,19 +29,11 @@ function Playlist() {
 
     const isMounted = useRef(false)
 
-    const getPage = () => {
-        const page = getUrlParameter('page')
-        if (/^\+?[1-9][0-9]*$/.test(page)) {
-            return Number(page)
-        }
-        return 1
-    }
-
     const [params, setParams] = useState({
         cat: getUrlParameter('cat') || undefined,
         order: getUrlParameter('order') || undefined,
         limit: DEFAULT_LIMIT,
-        offset: (getPage() - 1) * DEFAULT_LIMIT
+        offset: (getUrlPage() - 1) * DEFAULT_LIMIT
     })
 
     useEffect(() => {
@@ -56,7 +48,7 @@ function Playlist() {
         const fetchPlaylists = async () => {
             setLoading(true)
 
-            const page = getPage()
+            const page = getUrlPage()
             const offset = (page - 1) * DEFAULT_LIMIT
             const query = {
                 cat: getUrlParameter('cat') || undefined,
@@ -90,8 +82,8 @@ function Playlist() {
             order: getUrlParameter('order') || undefined,
             page
         }, {addQueryPrefix: true})}`
-        history.push(url)
-    }, [history, pathname])
+        navigate(url)
+    }, [navigate, pathname])
 
     const documentTitle = useMemo(() => {
         return `${catText}歌单 - 歌单 - ${DEFAULT_DOCUMENT_TITLE}`

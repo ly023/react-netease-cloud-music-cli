@@ -1,0 +1,168 @@
+.list {
+  overflow: hidden;
+  border: 1px solid #e2e2e2;
+  border-top: none;
+}
+
+.item {
+  float: left;
+  width: 100%;
+  height: 40px;
+  padding: 10px 0;
+  line-height: 40px;
+  background-color: #fff;
+
+  &.even {
+    background-color: $bg-color;
+  }
+
+  &:hover {
+    background-color: #eee;
+  }
+}
+
+.full {
+  .program-name,
+  .radio-name {
+    margin-left: 10px;
+  }
+
+  .program-name {
+    width: 304px;
+  }
+
+  .radio-name {
+    width: 176px;
+  }
+
+  .tag {
+    width: 140px;
+    margin: 1px 0 0 10px;
+
+    > a {
+      @extend %tag;
+    }
+  }
+}
+
+.order {
+  width: 47px;
+  margin: 6px 0 0;
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+
+  &.top {
+    color: #da4545;
+  }
+
+  .fluctuation {
+    font-size: 12px;
+
+    .new,
+    .descend > i,
+    .ascend > i {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .new {
+      width: 16px;
+      height: 17px;
+      background-position: -67px -283px;
+
+      @extend %background-icon;
+    }
+
+    .stable {
+      color: #999;
+    }
+
+    .descend > i,
+    .ascend > i {
+      width: 6px;
+      height: 6px;
+      margin: -1px 2px 0 0;
+
+      @extend %background-icon;
+    }
+
+    .descend {
+      color: #4abbeb;
+    }
+
+    .ascend {
+      color: #ba2226;
+    }
+
+    .descend > i {
+      background-position: -74px -324px;
+    }
+
+    .ascend > i {
+      background-position: -74px -304px;
+    }
+  }
+}
+
+.cover {
+  position: relative;
+  width: 40px;
+  height: 40px;
+
+  .play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: none;
+    width: 22px;
+    height: 22px;
+    margin: -11px 0 0 -11px;
+    overflow: hidden;
+    background-position: 0 -85px;
+    cursor: pointer;
+
+    @extend %background-icon-all;
+  }
+
+  &:hover {
+    .play-icon {
+      display: inline-block;
+
+      &:hover {
+        background-position: 0 -110px;
+      }
+    }
+  }
+}
+
+.cont {
+  width: 208px;
+  margin-left: 10px;
+  line-height: 20px;
+}
+
+.program-name,
+.radio-name {
+  display: block;
+
+  @extend %text-ellipsis;
+}
+
+.radio-name {
+  color: #999;
+}
+
+.hot {
+  position: relative;
+  width: 100px;
+  margin-top: 16px;
+  background-color: #dedede;
+  border-radius: 4px;
+
+  .progress {
+    height: 8px;
+    background-color: #c5c5c5;
+    border-radius: 4px;
+  }
+}

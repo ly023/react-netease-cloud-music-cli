@@ -1,15 +1,19 @@
 import {Component, createRef} from 'react'
 import {connect} from 'react-redux'
-import {withRouter, NavLink, Link} from 'react-router-dom'
-import emitter from 'utils/eventEmitter'
+import {Link} from 'react-router-dom'
+import withRouter from 'hoc/withRouter'
+import NavLink from 'components/NavLink'
+import pubsub from 'utils/pubsub'
 import {LOGIN_MODE} from 'constants/login'
-import LoginModal from 'components/LoginModal'
+import LoginModal from 'components/business/LoginModal'
 import {setNavHeight} from 'actions/base'
 import {requestLogout} from 'services/user'
 import {getThumbnail, deleteCookie} from 'utils'
 import SearchBar from './components/SearchBar'
 
 import styles from './index.scss'
+
+const MAX_HEIGHT = 103
 
 @withRouter
 @connect(({user}) => ({
@@ -29,7 +33,7 @@ export default class NavBar extends Component {
 
     componentDidMount() {
         this.setNavHeight()
-        emitter.on('login', (mode = LOGIN_MODE.GUIDE.TYPE) => {
+        pubsub.subscribe('login', (msg, mode = LOGIN_MODE.GUIDE.TYPE) => {
             this.handleLogin(mode)
         })
     }
@@ -44,7 +48,7 @@ export default class NavBar extends Component {
         const navHeight = this.navRef.current.offsetHeight
         if (navHeight) {
             this.setState({
-                style: {height: navHeight}
+                style: {height: Math.min(navHeight, MAX_HEIGHT)}
             })
             this.props.dispatch(setNavHeight({navHeight}))
         }
@@ -75,7 +79,7 @@ export default class NavBar extends Component {
     }
 
     isBelongToDiscover = () => {
-        const {pathname} = this.props.history.location
+        const {pathname} = this.props.location
         return pathname.startsWith('/discover')
             || pathname.startsWith('/song')
             || pathname.startsWith('/playlist')
@@ -93,27 +97,51 @@ export default class NavBar extends Component {
                 <li styleName="sub-nav-item">
                     <NavLink
                         to="/discover"
-                        exact={true}
-                        activeClassName={styles["sub-nav-active"]}
+                        end
+                        activeClassName={styles['sub-nav-active']}
                     >
                         <em>推荐</em>
                     </NavLink>
                 </li>
                 <li styleName="sub-nav-item">
-                    <NavLink to="/discover/toplist" activeClassName={styles["sub-nav-active"]}><em>排行榜</em></NavLink>
+                    <NavLink
+                        to="/discover/toplist"
+                        activeClassName={styles['sub-nav-active']}
+                    >
+                        <em>排行榜</em>
+                    </NavLink>
                 </li>
                 <li styleName="sub-nav-item">
-                    <NavLink to="/discover/playlist"
-                             activeClassName={styles["sub-nav-active"]}><em>歌单<i/></em></NavLink>
+                    <NavLink
+                        to="/discover/playlist"
+                        activeClassName={styles['sub-nav-active']}
+                    >
+                        <em>歌单<i/></em>
+                    </NavLink>
                 </li>
                 <li styleName="sub-nav-item">
-                    <NavLink to="/discover/radio" activeClassName={styles["sub-nav-active"]}><em>主播电台</em></NavLink>
+                    <NavLink
+                        to="/discover/radio"
+                        activeClassName={styles['sub-nav-active']}
+                    >
+                        <em>主播电台</em>
+                    </NavLink>
                 </li>
                 <li styleName="sub-nav-item">
-                    <NavLink to="/discover/4" activeClassName={styles["sub-nav-active"]}><em>歌手</em></NavLink>
+                    <NavLink
+                        to="/discover/4"
+                        activeClassName={styles['sub-nav-active']}
+                    >
+                        <em>歌手</em>
+                    </NavLink>
                 </li>
                 <li styleName="sub-nav-item">
-                    <NavLink to="/discover/album" activeClassName={styles["sub-nav-active"]}><em>新碟上架</em></NavLink>
+                    <NavLink
+                        to="/discover/album"
+                        activeClassName={styles['sub-nav-active']}
+                    >
+                        <em>新碟上架</em>
+                    </NavLink>
                 </li>
             </ul>
         }
@@ -132,27 +160,33 @@ export default class NavBar extends Component {
                 <div style={style}>
                     <div styleName="wrapper" ref={this.navRef}>
                         <div styleName="cont">
-                            <a href='/' styleName="logo">
+                            <Link to='/' styleName="logo">
                                 <span styleName="logo-text">网易云音乐</span>
-                            </a>
+                            </Link>
                             <ul styleName="link-list">
                                 <li styleName="link-item">
                                     <NavLink
                                         to='/discover'
-                                        activeClassName={styles["link-active"]}
-                                        styleName={`link${this.isBelongToDiscover() ? " link-active" : ""}`}
+                                        className={styles['link']}
+                                        activeClassName={styles['link-active']}
                                     >
                                         发现音乐
                                     </NavLink>
                                 </li>
                                 <li styleName="link-item">
-                                    <NavLink to='/my/music' styleName="link" activeClassName={styles["link-active"]}>
+                                    <NavLink
+                                        to='/my/music'
+                                        className={styles['link']}
+                                        activeClassName={styles['link-active']}                                   >
                                         我的音乐
                                     </NavLink>
                                 </li>
                                 <li styleName="link-item">
-                                    <NavLink to='/friend' styleName="link" activeClassName={styles["link-active"]}>
-                                        朋友
+                                    <NavLink
+                                        to='/friend'
+                                        className={styles['link']}
+                                        activeClassName={styles['link-active']}                                   >
+                                        关注
                                     </NavLink>
                                 </li>
                                 <li styleName="link-item">
@@ -166,7 +200,11 @@ export default class NavBar extends Component {
                                     </a>
                                 </li>
                                 <li styleName="link-item">
-                                    <NavLink to='/download' styleName="link" activeClassName={styles["link-active"]}>
+                                    <NavLink
+                                        to='/download'
+                                        className={styles['link']}
+                                        activeClassName={styles['link-active']}
+                                    >
                                         下载客户端<i styleName="tag-hot"/>
                                     </NavLink>
                                 </li>
@@ -247,4 +285,3 @@ export default class NavBar extends Component {
         )
     }
 }
-
