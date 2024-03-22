@@ -3,8 +3,15 @@
     "browser": true,
     "es6": true,
     "node": true
+    // "jest": true
   },
-  "parser": "@babel/eslint-parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true,
@@ -15,53 +22,58 @@
     // ECMAScript版本
     "ecmaVersion": 6
   },
-  "rules": {
-    /**
-    * off 或 0：表示不验证规则。
-    * warn 或 1：表示验证规则，当不满足时，给警告
-    * error 或 2 ：表示验证规则，不满足时报错
-    */
-
-    "template-curly-spacing" : "off",
-    "indent" : "off",
-    // 指定数组的元素之间要以空格隔开
-    "array-bracket-spacing": [2, "never"],
-    // 不能有声明后未被使用的变量或参数
-    "no-unused-vars": [1, {"vars": "all", "args": "after-used"}],
-    // 禁止重复声明变量
-    "no-redeclare": 2,
-    // 禁止混用tab和空格
-    "no-mixed-spaces-and-tabs": 0,
-
-    // 强制组件方法顺序
-    "react/sort-comp": 1,
-    // 不使用弃用的方法
-    "react/no-deprecated": 1,
-
-    // react 17不再需要
-    "react/jsx-uses-react": "off",
-    "react/react-in-jsx-scope": "off",
-
-    // 防止在JSX中使用的变量被错误地标记为未使用
-    "react/jsx-uses-vars": 2,
-
-    // react hooks
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
-  },
   "plugins": [
-    "babel",
     "react",
-    "react-hooks"
+    "react-hooks",
+    "@typescript-eslint",
+    "prettier"
   ],
   "settings": {
     "react": {
       "version": "detect"
     },
     "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
+      "typescript": {}
     }
+  },
+  "rules": {
+    "prettier/prettier": "warn",
+    /**
+    * off 或 0：表示不验证规则。
+    * warn 或 1：表示验证规则，当不满足时，给警告
+    * error 或 2 ：表示验证规则，不满足时报错
+    */
+    // 指定数组的元素之间要以空格隔开
+    "array-bracket-spacing": ["error", "never"],
+    // 不能有声明后未被使用的变量或参数
+    "no-unused-vars": ["warn", {"vars": "all", "args": "after-used"}],
+    // 禁止重复声明变量
+    "no-redeclare": "error",
+    // 禁止混用tab和空格
+    "no-mixed-spaces-and-tabs": "off",
+
+    "no-control-regex": "off",
+
+    // 强制组件方法顺序
+    "react/sort-comp": "warn",
+    // 不使用弃用的方法
+    "react/no-deprecated": "warn",
+
+    // react 17不再需要
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
+
+    // 防止在JSX中使用的变量被错误地标记为未使用
+    "react/jsx-uses-vars": "error",
+
+    "react/prop-types": "off",
+
+    // react hooks
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+
+    // typescript
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-var-requires": "off"
   }
 }

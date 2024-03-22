@@ -1,5 +1,4 @@
 .head-box {
-  margin: -8px 0 0;
   overflow: hidden;
 
   .nickname {
@@ -18,16 +17,15 @@
 
   .cover-box {
     position: relative;
-    width: 640px;
-    height: 300px;
+    width: 100%;
+
+    img {
+      width: 100%;
+    }
 
     .mask {
       position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background: url("~assets/images/ban-mask.png") no-repeat;
+      inset: 0;
 
       .head-bottom {
         position: absolute;
@@ -37,7 +35,7 @@
 
         .home-btn,
         .subscribe-btn {
-          @extend %new-button-base;
+          @extend %button-base;
 
           color: #fff;
           text-decoration: none;
@@ -55,8 +53,4 @@
       }
     }
   }
-}
-
-.client {
-  margin: 20px 0;
 }

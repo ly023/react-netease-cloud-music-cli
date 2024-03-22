@@ -19,39 +19,10 @@
   }
 
   .ok {
-    @extend %button;
-
-    background-position: right -428px;
-
-    i {
-      @extend %button-i;
-
-      padding: 0 15px 0 20px;
-      color: #fff;
-      background-position: 0 -387px;
-    }
-
-    &:hover {
-      background-position: right -510px;
-
-      > i {
-        background-position: 0 -469px;
-      }
-    }
+    @extend %button-primary;
   }
 
   .cancel {
-    @extend %white-button;
-
-    color: $font-primary-color;
-    background-position: right -100px;
-
-    > i {
-      @extend %white-button-i;
-    }
-
-    &:hover {
-      background-position: right -182px;
-    }
+    @extend %button-base;
   }
 }

@@ -14,24 +14,24 @@
 //
 // export default withRouter(ScrollToTop)
 
-import {useEffect} from 'react'
-import {useLocation} from 'react-router-dom'
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 const EXCLUDE_REGEX = [
-    /^\/discover\/album/,
-    /^\/discover\/toplist/,
-    /\/artist\/\d+\?\S+/,
+  /^\/discover\/album/,
+  /^\/discover\/toplist/,
+  /\/artist\/\d+\?\S+/
 ]
 
-export default function ScrollToTop({children}) {
-    const {pathname, search} = useLocation()
+export default function ScrollToTop({ children }) {
+  const { pathname, search } = useLocation()
 
-    useEffect(() => {
-        const match = EXCLUDE_REGEX.find(reg => reg.test(pathname + search))
-        if (!match) {
-            window.scrollTo(0, 0)
-        }
-    }, [pathname, search])
+  useEffect(() => {
+    const match = EXCLUDE_REGEX.find((reg) => reg.test(pathname + search))
+    if (!match) {
+      window.scrollTo(0, 0)
+    }
+  }, [pathname, search])
 
-    return children || null
+  return children || null
 }

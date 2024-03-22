@@ -1,6 +1,6 @@
-import {applyMiddleware, createStore} from 'redux'
+import { applyMiddleware, createStore } from 'redux'
 import createSagaMiddleware from 'redux-saga'
-import {composeWithDevTools} from '@redux-devtools/extension'
+import { composeWithDevTools } from '@redux-devtools/extension'
 // import logger from 'redux-logger'
 import AppReducer from 'reducers'
 
@@ -12,25 +12,24 @@ const sagaMiddleware = createSagaMiddleware()
 const middlewares = [sagaMiddleware]
 
 if (process.env.NODE_ENV === 'development') {
-    // applyMiddleware logger就一定要放在最后，否则输出结果会不正确
-    // middlewares.push(logger)
+  // applyMiddleware logger就一定要放在最后，否则输出结果会不正确
+  // middlewares.push(logger)
 }
 
 export default function configureStore() {
-    const composeEnhancers = composeWithDevTools({
-        // Specify name here, actionsDenylist, actionsCreators and other options if needed
-    })
+  const composeEnhancers = composeWithDevTools({
+    // Specify name here, actionsDenylist, actionsCreators and other options if needed
+  })
 
-    const store = createStore(
-        AppReducer,
-        // 忽略preloadedState
-        // mount it on the Store
-        composeEnhancers(
-            applyMiddleware(...middlewares)
-        ))
+  const store = createStore(
+    AppReducer,
+    // 忽略preloadedState
+    // mount it on the Store
+    composeEnhancers(applyMiddleware(...middlewares))
+  )
 
-    return {
-        ...store,
-        runSaga: sagaMiddleware.run
-    }
+  return {
+    ...store,
+    runSaga: sagaMiddleware.run
+  }
 }

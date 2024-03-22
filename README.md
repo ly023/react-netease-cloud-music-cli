@@ -1,6 +1,6 @@
-# react-netease-cloud-music
+# react-netease-cloud-music-cli
 
-仿网易云音乐PC端Web版，create react app 练手项目
+仿网易云音乐PC端Web版，react + vite 练手项目
 
 #### API
 

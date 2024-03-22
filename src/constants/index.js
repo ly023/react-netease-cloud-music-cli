@@ -9,7 +9,7 @@ export const DEFAULT_AVATAR = defaultAvatar
 export const DEFAULT_ARTIST_AVATAR = defaultArtistAvatar
 export const PAGINATION_LIMIT = 20
 
-export const DATE_FORMAT = 'YYYY-MM-DD'
+export const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss'
 
 export const TIP_TIMEOUT = 2000 // ms
 
@@ -17,83 +17,83 @@ export const NICKNAME_PATTERN = /^[a-zA-Z0-9_\-一-龥]{2,15}$/ // 昵称规则�
 export const DOUBLE_BYTE_CHAR_PATTERN = /[^\x00-\xff]/ // 匹配双字节字符（汉字、中文标点符号等）
 
 export const SEARCH_TYPE = {
-    SONG: {
-        TYPE: 1,
-        TEXT: '单曲',
-        UNIT: '首',
-    },
-    ARTIST: {
-        TYPE: 100,
-        TEXT: '歌手',
-        UNIT: '个',
-    },
-    ALBUM: {
-        TYPE: 10,
-        TEXT: '专辑',
-        UNIT: '张'
-    },
-    VIDEO: {
-        TYPE: 1014,
-        TEXT: '视频',
-        UNIT: '个'
-    },
-    LYRIC: {
-        TYPE: 1006,
-        TEXT: '歌词',
-        UNIT: '个'
-    },
-    PLAYLIST: {
-        TYPE: 1000,
-        TEXT: '歌单',
-        UNIT: '个'
-    },
-    RADIO: {
-        TYPE: 1009,
-        TEXT: '主播电台',
-        UNIT: '个'
-    },
-    USER: {
-        TYPE: 1002,
-        TEXT: '用户',
-        UNIT: '个'
-    }
+  SONG: {
+    TYPE: 1,
+    TEXT: '单曲',
+    UNIT: '首'
+  },
+  ARTIST: {
+    TYPE: 100,
+    TEXT: '歌手',
+    UNIT: '个'
+  },
+  ALBUM: {
+    TYPE: 10,
+    TEXT: '专辑',
+    UNIT: '张'
+  },
+  VIDEO: {
+    TYPE: 1014,
+    TEXT: '视频',
+    UNIT: '个'
+  },
+  LYRIC: {
+    TYPE: 1006,
+    TEXT: '歌词',
+    UNIT: '个'
+  },
+  PLAYLIST: {
+    TYPE: 1000,
+    TEXT: '歌单',
+    UNIT: '个'
+  },
+  RADIO: {
+    TYPE: 1009,
+    TEXT: '主播电台',
+    UNIT: '个'
+  },
+  USER: {
+    TYPE: 1002,
+    TEXT: '用户',
+    UNIT: '个'
+  }
 }
 
 export const VIDEO_TYPE = {
-    MV: {
-        TYPE: 0,
-    },
-    VIDEO: {
-        TYPE: 1,
-    }
+  MV: {
+    TYPE: 0
+  },
+  VIDEO: {
+    TYPE: 1
+  }
 }
 
 // 资源类型
 export const RESOURCE_TYPE = {
-    MV: {
-        TYPE: 1,
-        TEXT: 'mv'
-    },
-    RADIO: {
-        TYPE: 4,
-        TEXT: '电台'
-    },
-    VIDEO: {
-        TYPE: 5,
-        TEXT: '视频'
-    },
-    POST: {
-        TYPE: 6,
-        TEXT: '动态'
-    }
+  MV: {
+    TYPE: 1,
+    TEXT: 'mv'
+  },
+  RADIO: {
+    TYPE: 4,
+    TEXT: '电台'
+  },
+  VIDEO: {
+    TYPE: 5,
+    TEXT: '视频'
+  },
+  POST: {
+    TYPE: 6,
+    TEXT: '动态'
+  }
 }
 
 export const RESOURCE_ACTION_TYPE = {
-    OK: 1,
-    CANCEL: 0
+  OK: 1,
+  CANCEL: 0
 }
 
 export const PLAYLIST_COLLECTION_TYPE = {
-    OK: 1,
-    CANCEL: 2
+  OK: 1,
+  CANCEL: 2
 }

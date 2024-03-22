@@ -4,13 +4,44 @@
  * @returns {string}
  */
 export function getCookie(name) {
-    const cookies = document.cookie.split('; ').reduce((acc, current) => {
-        const [key, value] = current.split('=')
-        acc[key] = value
-        return acc
-    }, {})
+  const cookies = document.cookie.split('; ').reduce((acc, current) => {
+    const [key, value] = current.split('=')
+    acc[key] = value
+    return acc
+  }, {})
 
-    return cookies[name]
+  return cookies[name]
+}
+
+/** 写入cookie */
+export function setCookie({ key, value, expires, path, domain }) {
+  if (!key || /^(?:expires|max-age|path|domain)$/i.test(key)) {
+    return
+  }
+  let expiresStr = ''
+  if (expires) {
+    switch (expires.constructor) {
+      case Number:
+        expiresStr =
+          expires === Infinity
+            ? '; expires=Fri, 31 Dec 9999 23:59:59 GMT'
+            : '; max-age=' + expires
+        break
+      case String:
+        expiresStr = '; expires=' + expires
+        break
+      case Date:
+        expiresStr = '; expires=' + expires.toString()
+        break
+    }
+  }
+  document.cookie =
+    encodeURIComponent(key) +
+    '=' +
+    encodeURIComponent(value) +
+    expiresStr +
+    (domain ? '; domain=' + domain : '') +
+    (path ? '; path=' + path : '')
 }
 
 /**
@@ -20,12 +51,14 @@ export function getCookie(name) {
  * @param domain
  */
 export function deleteCookie(name, path, domain) {
-    if (getCookie(name)) {
-        document.cookie = name + "=" +
-            ((path) ? ";path=" + path : "") +
-            ((domain) ? ";domain=" + domain : "") +
-            ";expires=Thu, 01 Jan 1970 00:00:01 GMT"
-    }
+  if (getCookie(name)) {
+    document.cookie =
+      name +
+      '=' +
+      (path ? ';path=' + path : '') +
+      (domain ? ';domain=' + domain : '') +
+      ';expires=Thu, 01 Jan 1970 00:00:01 GMT'
+  }
 }
 
 /**
@@ -33,7 +66,7 @@ export function deleteCookie(name, path, domain) {
  * @returns {string}
  */
 export function getCsrfToken() {
-    return getCookie('CSRF')
+  return getCookie('CSRF')
 }
 
 /**
@@ -43,17 +76,17 @@ export function getCsrfToken() {
  * @returns {string|number|*}
  */
 export function formatNumber(number, digits = 0) {
-    if (typeof number !== 'number') {
-        return 0
-    }
-    const base = 1e4;
-    const units = ['', '万', '亿']
+  if (typeof number !== 'number') {
+    return 0
+  }
+  const base = 1e4
+  const units = ['', '万', '亿']
 
-    if (number < base) {
-        return number
-    }
-    const exponent = Math.floor(Math.log(number) / Math.log(base))
-    return `${trunc(number / Math.pow(base, exponent), digits)}${units[exponent]}`
+  if (number < base) {
+    return number
+  }
+  const exponent = Math.floor(Math.log(number) / Math.log(base))
+  return `${trunc(number / Math.pow(base, exponent), digits)}${units[exponent]}`
 }
 
 /**
@@ -63,8 +96,10 @@ export function formatNumber(number, digits = 0) {
  * @returns {number}
  */
 export function trunc(number, digits = 2) {
-    let x = number.toString()
-    return x.lastIndexOf('.') >= 0 ? parseFloat(x.substr(0, x.lastIndexOf('.') + (digits + 1))) : number
+  let x = number.toString()
+  return x.lastIndexOf('.') >= 0
+    ? parseFloat(x.substr(0, x.lastIndexOf('.') + (digits + 1)))
+    : number
 }
 
 /**
@@ -73,79 +108,97 @@ export function trunc(number, digits = 2) {
  * @returns {string}
  */
 export function formatDuration(ms) {
-    if (!ms || ms <= 0) {
-        return '00:00'
-    }
-    const seconds = Math.floor(ms / 1000)
-    let minute = Math.floor(seconds / 60)
-    let second = seconds % 60
-    if (minute < 10) {
-        minute = `0${minute}`
-    }
-    if (second < 10) {
-        second = `0${second}`
-    }
-    return `${minute}:${second}`
+  if (!ms || ms <= 0) {
+    return '00:00'
+  }
+  const seconds = Math.floor(ms / 1000)
+  let minute = Math.floor(seconds / 60)
+  let second = seconds % 60
+  if (minute < 10) {
+    minute = `0${minute}`
+  }
+  if (second < 10) {
+    second = `0${second}`
+  }
+  return `${minute}:${second}`
 }
 
 export function formatTimestamp(timestamp) {
-    if (timestamp) {
-        const date = new Date(timestamp)
-        const now = new Date()
+  if (timestamp) {
+    const date = new Date(timestamp)
+    const now = new Date()
 
-        const thisYear = now.getFullYear()
-        const dateYear = date.getFullYear()
+    const thisYear = now.getFullYear()
+    const dateYear = date.getFullYear()
 
-        // 今年
-        if (thisYear === dateYear) {
-            const thisMonth = now.getMonth() + 1
-            const dateMonth = date.getMonth() + 1
-            const thisDate = now.getDate()
-            const dateDate = date.getDate()
-            // 同一天
-            if (thisMonth === dateMonth && thisDate === dateDate) {
-                const minutes = Math.floor((now - date) / 1000 / 60)
-                if (minutes < 1) {
-                    return '刚刚'
-                } else if (minutes <= 59) {
-                    return `${minutes}分钟前`
-                } else {
-                    return formatDate(date, 'HH:mm')
-                }
-            } else {
-                const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
-                if (yesterday.getFullYear() === dateYear && yesterday.getMonth() + 1 === dateMonth && yesterday.getDate() === dateDate) {
-                    return `昨天 ${formatDate(date, 'HH:mm')}`
-                }
-            }
+    // 今年
+    if (thisYear === dateYear) {
+      const thisMonth = now.getMonth() + 1
+      const dateMonth = date.getMonth() + 1
+      const thisDate = now.getDate()
+      const dateDate = date.getDate()
+      // 同一天
+      if (thisMonth === dateMonth && thisDate === dateDate) {
+        const minutes = Math.floor((now - date) / 1000 / 60)
+        if (minutes < 1) {
+          return '刚刚'
+        } else if (minutes <= 59) {
+          return `${minutes}分钟前`
+        } else {
+          return formatDate(date, 'HH:mm')
         }
-        return formatDate(date, 'YYYY年MM月dd日 HH:mm')
+      } else {
+        const yesterday = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate() - 1
+        )
+        if (
+          yesterday.getFullYear() === dateYear &&
+          yesterday.getMonth() + 1 === dateMonth &&
+          yesterday.getDate() === dateDate
+        ) {
+          return `昨天 ${formatDate(date, 'HH:mm')}`
+        }
+      }
     }
-    return ''
+    return formatDate(date, 'YYYY年MM月dd日 HH:mm')
+  }
+  return ''
 }
 
 export function formatDate(date, format) {
-    let timeStr = format
-    const o = {
-        'Y+': date.getFullYear(),
-        'M+': date.getMonth() + 1,
-        'd+': date.getDate(),
-        'H+': date.getHours(), // 二十四小时制
-        'm+': date.getMinutes(),
-        's+': date.getSeconds(),
-        'S': date.getMilliseconds() // 毫秒
+  let timeStr = format
+  const o = {
+    'Y+': date.getFullYear(),
+    'M+': date.getMonth() + 1,
+    'd+': date.getDate(),
+    'H+': date.getHours(), // 二十四小时制
+    'm+': date.getMinutes(),
+    's+': date.getSeconds(),
+    S: date.getMilliseconds() // 毫秒
+  }
+  if (/([Y|y]+)/.test(format)) {
+    timeStr = format.replace(
+      RegExp.$1,
+      date
+        .getFullYear()
+        .toString()
+        .substr(4 - RegExp.$1.length)
+    )
+  }
+  for (let k in o) {
+    if (new RegExp(`(${k})`).test(timeStr)) {
+      timeStr = timeStr.replace(
+        RegExp.$1,
+        RegExp.$1.length === 1
+          ? o[k]
+          : `00${o[k]}`.substr(o[k].toString().length)
+      )
     }
-    if (/([Y|y]+)/.test(format)) {
-        timeStr = format.replace(RegExp.$1, (date.getFullYear().toString()).substr(4 - RegExp.$1.length))
-    }
-    for (let k in o) {
-        if (new RegExp(`(${k})`).test(timeStr)) {
-            timeStr = timeStr.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : ((`00${o[k]}`).substr((o[k].toString()).length)))
-        }
-    }
-    return timeStr
+  }
+  return timeStr
 }
-
 
 /**
  * 设置localStorage
@@ -153,7 +206,7 @@ export function formatDate(date, format) {
  * @param value
  */
 export function setLocalStorage(key, value) {
-    window.localStorage.setItem(key, JSON.stringify(value))
+  window.localStorage.setItem(key, JSON.stringify(value))
 }
 
 /**
@@ -162,16 +215,15 @@ export function setLocalStorage(key, value) {
  * @returns {null|any}
  */
 export function getLocalStorage(key) {
-    let value = window.localStorage.getItem(key)
-    if (value === undefined) {
-        return null
-    }
-    return JSON.parse(value)
+  let value = window.localStorage.getItem(key)
+  if (value === undefined) {
+    return null
+  }
+  return JSON.parse(value)
 }
 
-
 export function isValidMobileNumber(value) {
-    return /^1[3|4|5|7|8|9]\d{9}$/.test(value)
+  return /^1[3|4|5|7|8|9]\d{9}$/.test(value)
 }
 
 /**
@@ -183,11 +235,11 @@ export function isValidMobileNumber(value) {
  * @returns {string}
  */
 export function getThumbnail(url, width = 256, height, quality) {
-    if (url) {
-        url = url.split('?')[0]
-        return `${url}?param=${width}y${height || width}${quality ? `&quality=${quality}` : ''}`
-    }
-    return ''
+  if (url) {
+    url = url.split('?')[0]
+    return `${url}?param=${width}y${height || width}${quality ? `&quality=${quality}` : ''}`
+  }
+  return ''
 }
 
 /**
@@ -198,22 +250,22 @@ export function getThumbnail(url, width = 256, height, quality) {
  * @returns {string}
  */
 export function getBlur(url, radius = 40, sigma = 20) {
-    if (url) {
-        url = url.split('?')[0]
-        return `${url}?imageView&blur=${radius}x${sigma}`
-    }
-    return ''
+  if (url) {
+    url = url.split('?')[0]
+    return `${url}?imageView&blur=${radius}x${sigma}`
+  }
+  return ''
 }
 
 /**
  * 禁用文本选择
  */
 export function disableTextSelection() {
-    if (document.selection) {
-        document.selection.empty()
-    } else {
-        window.getSelection().removeAllRanges()
-    }
+  if (document.selection) {
+    document.selection.empty()
+  } else {
+    window.getSelection().removeAllRanges()
+  }
 }
 
 /**
@@ -223,20 +275,23 @@ export function disableTextSelection() {
  * @param callback
  */
 export function click(e, id, callback) {
-    let elem = e.target
+  let elem = e.target
 
-    // 删除元素时特殊处理
-    if (elem.className.indexOf('delete') !== -1) {
-        return
-    }
+  // 删除元素时特殊处理
+  if (
+    typeof elem.className === 'string' &&
+    elem.className.indexOf('delete') !== -1
+  ) {
+    return
+  }
 
-    while (elem) {
-        if (typeof elem.id === 'string' && elem.id.indexOf(id) !== -1) {
-            return
-        }
-        elem = elem.parentNode
+  while (elem) {
+    if (typeof elem.id === 'string' && elem.id.indexOf(id) !== -1) {
+      return
     }
-    callback && callback()
+    elem = elem.parentNode
+  }
+  callback && callback()
 }
 
 /**
@@ -246,13 +301,16 @@ export function click(e, id, callback) {
  * Selection controls for input & textarea：IE 9及以上
  */
 export function getCursorPosition(element) {
-    let cursorStart = 0
-    let cursorEnd = 0
-    if (typeof element.selectionStart === 'number' && typeof element.selectionEnd === 'number') {
-        cursorStart = element.selectionStart
-        cursorEnd = element.selectionEnd
-    }
-    return [cursorStart, cursorEnd]
+  let cursorStart = 0
+  let cursorEnd = 0
+  if (
+    typeof element.selectionStart === 'number' &&
+    typeof element.selectionEnd === 'number'
+  ) {
+    cursorStart = element.selectionStart
+    cursorEnd = element.selectionEnd
+  }
+  return [cursorStart, cursorEnd]
 }
 
 /**
@@ -260,15 +318,16 @@ export function getCursorPosition(element) {
  * @returns {string}
  */
 export function generateGuid() {
-    let result = ''
-    let i
-    for (let j = 0; j < 32; j++) {
-        if (j === 8 || j === 12 || j === 16 || j === 20)
-            result = result + '-'
-        i = Math.floor(Math.random() * 16).toString(16).toUpperCase()
-        result = result + i
-    }
-    return result
+  let result = ''
+  let i
+  for (let j = 0; j < 32; j++) {
+    if (j === 8 || j === 12 || j === 16 || j === 20) result = result + '-'
+    i = Math.floor(Math.random() * 16)
+      .toString(16)
+      .toUpperCase()
+    result = result + i
+  }
+  return result
 }
 
 /**
@@ -277,12 +336,13 @@ export function generateGuid() {
  * @returns {string}
  */
 export function generateRandomString(length = 8) {
-    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-    let str = ''
-    for (let i = 0, n = charset.length; i < length; ++i) {
-        str += charset.charAt(Math.floor(Math.random() * n))
-    }
-    return str
+  const charset =
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  let str = ''
+  for (let i = 0, n = charset.length; i < length; ++i) {
+    str += charset.charAt(Math.floor(Math.random() * n))
+  }
+  return str
 }
 
 /**
@@ -291,23 +351,23 @@ export function generateRandomString(length = 8) {
  * @returns {{}}
  */
 export function getUrlParameters(url) {
-    if (!url || typeof url !== 'string') {
-        url = window.location.href
-    }
-    // 使用 /\?([^/?#:]+)#?/ 正则来匹配 ? 与 #（#为位置标识符）之间的非/?#:字符
-    const queryString = url.match(/\?([^/?#:]+)#?/)?.[1]
+  if (!url || typeof url !== 'string') {
+    url = window.location.href
+  }
+  // 使用 /\?([^/?#:]+)#?/ 正则来匹配 ? 与 #（#为位置标识符）之间的非/?#:字符
+  const queryString = url.match(/\?([^/?#:]+)#?/)?.[1]
 
-    if (!queryString) {
-        return {}
-    }
+  if (!queryString) {
+    return {}
+  }
 
-    const queryObj = queryString.split('&').reduce((params, block) => {
-        // 如果未赋值，则默认为空字符串
-        const [k, v = ''] = block.split('=')
-        params[k] = decodeURIComponent(v)
-        return params
-    }, {})
-    return queryObj
+  const queryObj = queryString.split('&').reduce((params, block) => {
+    // 如果未赋值，则默认为空字符串
+    const [k, v = ''] = block.split('=')
+    params[k] = decodeURIComponent(v)
+    return params
+  }, {})
+  return queryObj
 }
 
 /**
@@ -316,10 +376,12 @@ export function getUrlParameters(url) {
  * @returns {string}
  */
 export function getUrlParameter(name) {
-    const key = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]')
-    const regex = new RegExp('[\\?&]' + key + '=([^&#]*)')
-    const results = regex.exec(window.location.search)
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '))
+  const key = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]')
+  const regex = new RegExp('[\\?&]' + key + '=([^&#]*)')
+  const results = regex.exec(window.location.search)
+  return results === null
+    ? ''
+    : decodeURIComponent(results[1].replace(/\+/g, ' '))
 }
 
 /**
@@ -330,11 +392,27 @@ export function getUrlParameter(name) {
  * @returns {void | string}
  */
 export function replaceUrlParamVal(name, replaceWith, url) {
-    if (!url) {
-        url = window.location.href
-    }
-    const reg = new RegExp('(' + name + '=)([^&]*)', 'gi')
-    return url.replace(reg, `${name}=${replaceWith}`)
+  if (!url) {
+    url = window.location.href
+  }
+  const reg = new RegExp('(' + name + '=)([^&]*)', 'gi')
+  return url.replace(reg, `${name}=${replaceWith}`)
+}
+
+/**
+ * 追加url参数
+ * @param url
+ * @param params
+ * @returns {string|*}
+ */
+export function appendUrlParams(url, params) {
+  if (url && typeof url === 'string') {
+    return Object.keys(params).reduce((acc, key) => {
+      const value = params[key]
+      return `${acc}${acc.match(/[\\?]/g) ? '&' : '?'}${key}=${value}`
+    }, url)
+  }
+  return url
 }
 
 /**
@@ -342,8 +420,12 @@ export function replaceUrlParamVal(name, replaceWith, url) {
  * @returns {number}
  */
 export function getScrollTop() {
-    // safari: window.pageYOffset
-    return document.documentElement.scrollTop || document.body.scrollTop || window.pageYOffset
+  // safari: window.pageYOffset
+  return (
+    document.documentElement.scrollTop ||
+    document.body.scrollTop ||
+    window.pageYOffset
+  )
 }
 
 /**
@@ -351,11 +433,11 @@ export function getScrollTop() {
  * @returns {number}
  */
 export function getScrollHeight() {
-    return document.documentElement.scrollHeight || document.body.scrollHeight
+  return document.documentElement.scrollHeight || document.body.scrollHeight
 }
 
 export function getClientHeight() {
-    return document.documentElement.clientHeight || document.body.clientHeight
+  return document.documentElement.clientHeight || document.body.clientHeight
 }
 
 /**
@@ -364,18 +446,18 @@ export function getClientHeight() {
  * @param offset
  */
 export function scrollIntoView(el, offset = 0) {
-    if (el) {
-        const top = el.offsetTop
-        const scrollTop = top - offset
-        window.scrollTo(0, scrollTop)
-    }
+  if (el) {
+    const top = el.offsetTop
+    const scrollTop = top - offset
+    window.scrollTo(0, scrollTop)
+  }
 }
 
 export function trim(str) {
-    if (typeof str === 'string' && str) {
-        return str.trim()
-    }
-    return ''
+  if (typeof str === 'string' && str) {
+    return str.trim()
+  }
+  return ''
 }
 
 /**
@@ -384,49 +466,49 @@ export function trim(str) {
  * @returns {number}
  */
 export function bytes(str) {
-    let total = 0
-    if (typeof str === 'string' && str) {
-        const reg = /[^\x00-\xfff]/ // 匹配双字节字符
-        for (let i = 0, len = str.length; i < len; i++) {
-            if (reg.test(str.charAt(i))) {
-                total += 2
-            } else {
-                total += 1
-            }
-        }
+  let total = 0
+  if (typeof str === 'string' && str) {
+    const reg = /[^\x00-\xfff]/ // 匹配双字节字符
+    for (let i = 0, len = str.length; i < len; i++) {
+      if (reg.test(str.charAt(i))) {
+        total += 2
+      } else {
+        total += 1
+      }
     }
-    return total
+  }
+  return total
 }
 
 export function isEndReached(element, offset = 10) {
-    if (element) {
-        const rectObject = element.getBoundingClientRect()
-        const top = rectObject?.top || 0
-        const scrollTop = getScrollTop()
-        const clientHeight = getClientHeight()
-        return scrollTop + clientHeight + offset >= top
-    }
-    return true
+  if (element) {
+    const rectObject = element.getBoundingClientRect()
+    const top = rectObject?.top || 0
+    const scrollTop = getScrollTop()
+    const clientHeight = getClientHeight()
+    return scrollTop + clientHeight + offset >= top
+  }
+  return true
 }
 
 export function getUrlPaginationParams(defaultLimit = 30, defaultOffset = 0) {
-    let limit = defaultLimit
-    const urlLimit = getUrlParameter('limit')
-    if (urlLimit && /^\+?[1-9][0-9]*$/.test(urlLimit)) {
-        limit = Number(urlLimit)
-    }
-    let offset = defaultOffset
-    const urlOffset = getUrlParameter('offset')
-    if (urlOffset && /^\d+$/.test(urlOffset)) {
-        offset = Number(urlOffset)
-    }
-    return {limit, offset}
+  let limit = defaultLimit
+  const urlLimit = getUrlParameter('limit')
+  if (urlLimit && /^\+?[1-9][0-9]*$/.test(urlLimit)) {
+    limit = Number(urlLimit)
+  }
+  let offset = defaultOffset
+  const urlOffset = getUrlParameter('offset')
+  if (urlOffset && /^\d+$/.test(urlOffset)) {
+    offset = Number(urlOffset)
+  }
+  return { limit, offset }
 }
 
 export function getUrlPage() {
-    const page = getUrlParameter('page')
-    if (/^\+?[1-9][0-9]*$/.test(page)) {
-        return Number(page)
-    }
-    return 1
+  const page = getUrlParameter('page')
+  if (/^\+?[1-9][0-9]*$/.test(page)) {
+    return Number(page)
+  }
+  return 1
 }

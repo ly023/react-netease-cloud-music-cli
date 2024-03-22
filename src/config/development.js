@@ -1,3 +1,3 @@
 export default {
-    apiHost: '/base'
+  apiHost: '/base'
 }
