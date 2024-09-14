@@ -1,11 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import autoCSSModulePlugin from 'vite-plugin-auto-css-modules'
+import vitePluginReactCssModules from '@roeefl/vite-plugin-react-css-modules'
 import postcssPresetEnv from 'postcss-preset-env'
-
-const path = require('path')
-const apiMocker = require('mocker-api')
+import path from 'path'
+import apiMocker from 'mocker-api'
 
 function resolve(dir) {
   return path.resolve(__dirname, dir)
@@ -32,7 +31,7 @@ export default ({ mode }) => {
         }
       }),
       tsconfigPaths(),
-      autoCSSModulePlugin()
+      vitePluginReactCssModules()
     ],
     esbuild: {
       include: /\.[jt]sx?$/,

@@ -103,6 +103,11 @@
       vertical-align: middle;
     }
 
+    .name-box {
+      display: inline-flex;
+      align-items: center;
+    }
+
     .play-icon {
       display: inline-block;
       line-height: 1;
@@ -115,12 +120,12 @@
       margin-left: 8px;
       vertical-align: middle;
 
+      @extend %text-ellipsis;
+
       &.top {
         display: inline-block;
         max-width: 70%;
       }
-
-      @extend %text-ellipsis;
 
       .alias {
         color: #aeaeae;

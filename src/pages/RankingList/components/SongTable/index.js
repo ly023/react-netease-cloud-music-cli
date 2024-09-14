@@ -53,38 +53,43 @@ function SongTable(props) {
                     <span className={styles.number}>{order}</span>
                   </td>
                   <td>
-                    {isTop ? (
-                      <img
-                        src={getThumbnail(album?.picUrl, 50)}
-                        className={styles['album-cover']}
-                        alt=""
-                      />
-                    ) : null}
-                    <SinglePlay
-                      id={id}
-                      active={currentSong?.id === id}
-                      disabled={disabled}
-                    />
-                    <div
-                      className={`${styles.name} ${isTop ? styles.top : ''}`}
-                    >
-                      <Link to={`/song/${id}`} title={item.name}>
-                        {item.name}
-                      </Link>
-                      {alias && alias.length ? (
-                        <span className={styles.alias} title={alias.join('、')}>
-                          {' '}
-                          - ({alias.join('、')})
-                        </span>
-                      ) : (
-                        ''
-                      )}
-                      {item.mv ? (
-                        <Link
-                          to={`/mv/${item.mv}`}
-                          className={styles['mv-icon']}
+                    <div className={styles['name-box']}>
+                      {isTop ? (
+                        <img
+                          src={getThumbnail(album?.picUrl, 50)}
+                          className={styles['album-cover']}
+                          alt=""
                         />
                       ) : null}
+                      <SinglePlay
+                        id={id}
+                        active={currentSong?.id === id}
+                        disabled={disabled}
+                      />
+                      <div
+                        className={`${styles.name} ${isTop ? styles.top : ''}`}
+                      >
+                        <Link to={`/song/${id}`} title={item.name}>
+                          {item.name}
+                        </Link>
+                        {alias && alias.length ? (
+                          <span
+                            className={styles.alias}
+                            title={alias.join('、')}
+                          >
+                            {' '}
+                            - ({alias.join('、')})
+                          </span>
+                        ) : (
+                          ''
+                        )}
+                        {item.mv ? (
+                          <Link
+                            to={`/mv/${item.mv}`}
+                            className={styles['mv-icon']}
+                          />
+                        ) : null}
+                      </div>
                     </div>
                   </td>
                   <td>
