@@ -1,28 +1,28 @@
-import config from 'config'
+const base = import.meta.env.VITE_BASE_URL
 
 export default {
   categories: {
-    url: `${config.apiHost}/dj/catelist`,
+    url: `${base}/dj/catelist`,
     type: 'GET'
   },
   categoryRecommendation: {
-    url: `${config.apiHost}/dj/recommend/type`,
+    url: `${base}/dj/recommend/type`,
     type: 'GET'
   },
   categoryHot: {
-    url: `${config.apiHost}/dj/radio/hot`,
+    url: `${base}/dj/radio/hot`,
     type: 'GET'
   },
   requestHotAnchor: {
-    url: `${config.apiHost}/dj/hot/anchor`,
+    url: `${base}/dj/hot/anchor`,
     type: 'GET'
   },
   detail: {
-    url: `${config.apiHost}/dj/detail`,
+    url: `${base}/dj/detail`,
     type: 'GET'
   },
   programs: {
-    url: `${config.apiHost}/dj/program`,
+    url: `${base}/dj/program`,
     type: 'GET'
   }
 }

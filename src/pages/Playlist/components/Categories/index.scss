@@ -4,6 +4,11 @@
 }
 
 .arrow {
+  top: 25px;
+  left: 44px;
+  border-color: transparent transparent #ccc;
+  border-width: 12px 11px;
+
   &,
   &::after {
     position: absolute;
@@ -11,11 +16,6 @@
     border-style: solid;
     content: "";
   }
-
-  top: 25px;
-  left: 44px;
-  border-color: transparent transparent #ccc;
-  border-width: 12px 11px;
 
   &::after {
     top: -11px;

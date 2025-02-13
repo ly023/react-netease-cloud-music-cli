@@ -1,61 +1,61 @@
 /**
  * 歌单
  */
-import config from 'config'
+const base = import.meta.env.VITE_BASE_URL
 
 export default {
   category: {
-    url: `${config.apiHost}/playlist/catlist`,
+    url: `${base}/playlist/catlist`,
     type: 'GET'
   },
   hotCategory: {
-    url: `${config.apiHost}/playlist/hot`,
+    url: `${base}/playlist/hot`,
     type: 'GET'
   },
   top: {
-    url: `${config.apiHost}/top/playlist`,
+    url: `${base}/top/playlist`,
     type: 'GET'
   },
   personalized: {
-    url: `${config.apiHost}/personalized`,
+    url: `${base}/personalized`,
     type: 'GET'
   },
   detail: {
-    url: `${config.apiHost}/playlist/detail`,
+    url: `${base}/playlist/detail`,
     type: 'GET'
   },
   similar: {
-    url: `${config.apiHost}/simi/playlist`,
+    url: `${base}/simi/playlist`,
     type: 'GET'
   },
   related: {
-    url: `${config.apiHost}/related/playlist`,
+    url: `${base}/related/playlist`,
     type: 'GET'
   },
   subscribe: {
-    url: `${config.apiHost}/playlist/subscribe`,
+    url: `${base}/playlist/subscribe`,
     // type: 'POST'
     type: 'GET'
   },
   // 用户歌单
   userPlaylist: {
-    url: `${config.apiHost}/user/playlist`,
+    url: `${base}/user/playlist`,
     type: 'GET'
   },
   createUserPlaylist: {
-    url: `${config.apiHost}/playlist/create`,
+    url: `${base}/playlist/create`,
     type: 'GET'
   },
   updateUserPlaylist: {
-    url: `${config.apiHost}/playlist/update`,
+    url: `${base}/playlist/update`,
     type: 'GET'
   },
   deleteUserPlaylist: {
-    url: `${config.apiHost}/playlist/delete`,
+    url: `${base}/playlist/delete`,
     type: 'GET'
   },
   updateUserPlaylistSongs: {
-    url: `${config.apiHost}/playlist/tracks`,
+    url: `${base}/playlist/tracks`,
     type: 'GET'
   }
 }

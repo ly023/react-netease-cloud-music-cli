@@ -1,8 +1,8 @@
-import config from 'config'
+const base = import.meta.env.VITE_BASE_URL
 
 export default {
   countryCodeList: {
-    url: `${config.apiHost}/countries/code/list`,
+    url: `${base}/countries/code/list`,
     type: 'GET'
   }
 }

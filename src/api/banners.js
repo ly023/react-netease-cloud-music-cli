@@ -1,8 +1,8 @@
-import config from 'config'
+const base = import.meta.env.VITE_BASE_URL
 
 export default {
   banners: {
-    url: `${config.apiHost}/banner`,
+    url: `${base}/banner`,
     type: 'GET'
   }
 }

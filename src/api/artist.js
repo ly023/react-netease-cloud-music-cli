@@ -1,49 +1,49 @@
-import config from 'config'
+const base = import.meta.env.VITE_BASE_URL
 
 export default {
   // 热门歌手
   top: {
-    url: `${config.apiHost}/top/artists`
+    url: `${base}/top/artists`
   },
   // 歌手分类列表
   list: {
-    url: `${config.apiHost}/artist/list`,
+    url: `${base}/artist/list`,
     type: 'GET'
   },
   songs: {
-    url: `${config.apiHost}/artists`,
+    url: `${base}/artists`,
     type: 'GET'
   },
   // 歌手详情
   detail: {
-    url: `${config.apiHost}/artist/detail`,
+    url: `${base}/artist/detail`,
     type: 'GET'
   },
   // 歌手热门50首歌曲
   artistTop: {
-    url: `${config.apiHost}/artist/top/song`,
+    url: `${base}/artist/top/song`,
     type: 'GET'
   },
   album: {
-    url: `${config.apiHost}/artist/album`,
+    url: `${base}/artist/album`,
     type: 'GET'
   },
   mv: {
-    url: `${config.apiHost}/artist/mv`,
+    url: `${base}/artist/mv`,
     type: 'GET'
   },
   desc: {
-    url: `${config.apiHost}/artist/desc`,
+    url: `${base}/artist/desc`,
     type: 'GET'
   },
   // 相似歌手
   similar: {
-    url: `${config.apiHost}/simi/artist`,
+    url: `${base}/simi/artist`,
     type: 'GET'
   },
   // 收藏/取消收藏歌手 id:id,t:1 为收藏,其他为取消收藏
   subscribe: {
-    url: `${config.apiHost}/artist/sub`,
+    url: `${base}/artist/sub`,
     type: 'GET'
   }
 }

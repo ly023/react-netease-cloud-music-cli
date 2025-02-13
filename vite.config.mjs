@@ -33,18 +33,35 @@ export default ({ mode }) => {
       tsconfigPaths(),
       vitePluginReactCssModules()
     ],
+    build: {
+      target: "es2022",
+      // commonjsOptions: {
+      //   transformMixedEsModules: true
+      // },
+      // sourcemap: true,
+      // rollupOptions: {
+      //   onLog(level, log, handler) {
+      //     if (log.cause && log.cause.message === `Can't resolve original location of error.`) {
+      //       return
+      //     }
+      //     handler(level, log)
+      //   }
+      // }
+    },
     esbuild: {
       include: /\.[jt]sx?$/,
       exclude: [],
-      loader: 'tsx'
+      loader: 'tsx',
+      target: "es2022"
       // jsxInject: `import React from 'react'`
     },
     optimizeDeps: {
       esbuildOptions: {
+        target: "es2022",
         loader: {
           '.js': 'jsx',
           '.ts': 'tsx'
-        }
+        },
       }
     },
     css: {
@@ -57,8 +74,9 @@ export default ({ mode }) => {
       },
       preprocessorOptions: {
         scss: {
-          additionalData: `@import 'style/variable.scss';`,
-          esModule: false
+          api: "modern-compiler",
+          additionalData: `@use 'style/variable.scss' as *;`,
+          // esModule: false
         }
       },
       modules: {
@@ -66,11 +84,6 @@ export default ({ mode }) => {
         localsConvention: 'camelCase', // 修改生成的配置对象的key的展示形式(驼峰还是中划线形式)
         scopeBehaviour: 'local', // 配置当前的模块化行为是模块化还是全局化 (有hash就是开启了模块化的一个标志, 因为他可以保证产生不同的hash值来控制我们的样式类名不被覆盖)
         generateScopedName: CSS_MODULE_LOCAL_IDENT_NAME
-      }
-    },
-    build: {
-      commonjsOptions: {
-        transformMixedEsModules: true
       }
     },
     server: {
@@ -96,7 +109,6 @@ export default ({ mode }) => {
         assets: resolve('src/assets'),
         api: resolve('src/api'),
         components: resolve('src/components'),
-        config: resolve('src/config'),
         constants: resolve('src/constants'),
         hoc: resolve('src/hoc'),
         hook: resolve('src/hook'),
@@ -109,6 +121,6 @@ export default ({ mode }) => {
         utils: resolve('src/utils'),
         pages: resolve('src/pages')
       }
-    }
+    },
   })
 }

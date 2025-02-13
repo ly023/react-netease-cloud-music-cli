@@ -1,18 +1,18 @@
-import config from 'config'
+const base = import.meta.env.VITE_BASE_URL
 
 export default {
   /**
    * 每日推荐歌单
    */
   playlist: {
-    url: `${config.apiHost}/recommend/resource`,
+    url: `${base}/recommend/resource`,
     type: 'GET'
   },
   /**
    * 每日推荐歌曲
    */
   songs: {
-    url: `${config.apiHost}/recommend/songs`,
+    url: `${base}/recommend/songs`,
     type: 'GET'
   }
 }

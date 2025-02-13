@@ -1,5 +1,4 @@
 import fetch from 'cross-fetch'
-import config from 'config'
 import { appendUrlParams, getCsrfToken } from './index'
 
 const codeMessage = {
@@ -76,7 +75,7 @@ export default function request(url, fetchOptions = {}, options = {}) {
     requestUrl = appendUrlParams(url, { csrf_token: csrfToken })
   }
   // 访问Vercel部署的接口，需额外添加realIP参数（随便一个国内的ip）
-  if (config.isProduction) {
+  if (import.meta.env.VITE_PRO === 'true') {
     requestUrl = appendUrlParams(requestUrl, { realIP: '185.199.110.153' })
   }
 

@@ -1,12 +1,12 @@
 /**
  * 动态
  */
-import config from 'config'
+const base = import.meta.env.VITE_BASE_URL
 
 export default {
   // 获取动态消息
   posts: {
-    url: `${config.apiHost}/event`,
+    url: `${base}/event`,
     type: 'GET'
   }
 }

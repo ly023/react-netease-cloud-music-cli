@@ -1,16 +1,16 @@
-import config from 'config'
+const base = import.meta.env.VITE_BASE_URL
 
 export default {
   recommendation: {
-    url: `${config.apiHost}/program/recommend`,
+    url: `${base}/program/recommend`,
     type: 'GET'
   },
   programRank: {
-    url: `${config.apiHost}/dj/program/toplist`,
+    url: `${base}/dj/program/toplist`,
     type: 'GET'
   },
   detail: {
-    url: `${config.apiHost}/dj/program/detail`,
+    url: `${base}/dj/program/detail`,
     type: 'GET'
   }
 }

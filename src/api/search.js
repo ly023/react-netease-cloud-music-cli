@@ -1,16 +1,16 @@
-import config from 'config'
+const base = import.meta.env.VITE_BASE_URL
 
 export default {
   searchSuggest: {
-    url: `${config.apiHost}/search/suggest`,
+    url: `${base}/search/suggest`,
     type: 'GET'
   },
   search: {
-    url: `${config.apiHost}/search`,
+    url: `${base}/search`,
     type: 'GET'
   },
   multimatch: {
-    url: `${config.apiHost}/search/multimatch`,
+    url: `${base}/search/multimatch`,
     type: 'GET'
   }
 }

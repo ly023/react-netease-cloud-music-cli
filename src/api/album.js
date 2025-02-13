@@ -1,15 +1,15 @@
-import config from 'config'
+const base = import.meta.env.VITE_BASE_URL
 
 export default {
   newest: {
-    url: `${config.apiHost}/album/newest`,
+    url: `${base}/album/newest`,
     type: 'GET'
   },
   allNew: {
-    url: `${config.apiHost}/album/new`
+    url: `${base}/album/new`
   },
   detail: {
-    url: `${config.apiHost}/album`,
+    url: `${base}/album`,
     type: 'GET'
   }
 }

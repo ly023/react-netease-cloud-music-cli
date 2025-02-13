@@ -36,8 +36,8 @@
     "xgplayer": "^3.0.20"
   },
   "scripts": {
-    "start": "vite",
-    "build": "vite build",
+    "start": "vite  --mode dev",
+    "build": "vite build --mode pro",
     "eslint": "eslint \"src/**/*.{js,jsx,ts,tsx,json}\"",
     "eslint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx,json}\"",
     "stylelint": "stylelint \"src/**/*.{css,scss}\"",

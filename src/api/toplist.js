@@ -1,12 +1,12 @@
-import config from 'config'
+const base = import.meta.env.VITE_BASE_URL
 
 export default {
   rankList: {
-    url: `${config.apiHost}/playlist/detail`,
+    url: `${base}/playlist/detail`,
     type: 'GET'
   },
   all: {
-    url: `${config.apiHost}/toplist`,
+    url: `${base}/toplist`,
     type: 'GET'
   }
 }
