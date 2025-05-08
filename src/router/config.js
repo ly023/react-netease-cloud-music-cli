@@ -79,11 +79,6 @@ export default [
     component: importPages('Friend')
   },
   {
-    path: '/download',
-    name: '下载客户端',
-    component: importPages('Download')
-  },
-  {
     path: '/song/:id',
     name: '歌曲详情',
     component: importPages('Song')

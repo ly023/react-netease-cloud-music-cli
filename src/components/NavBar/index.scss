@@ -28,7 +28,6 @@ $nav-border-color: #202020;
   margin: 0 auto;
 }
 
-.logo,
 .search,
 .video-contribution,
 .login {
@@ -39,7 +38,6 @@ $nav-border-color: #202020;
   float: left;
   width: 176px;
   height: 69px;
-  background-position: 0 0;
 }
 
 .logo-text {
@@ -111,12 +109,6 @@ $nav-border-color: #202020;
   height: 45px;
   padding: 7px 0 0;
 
-  &:hover {
-    .login-cont {
-      display: block;
-    }
-  }
-
   .login-status {
     position: relative;
     width: 30px;
@@ -137,34 +129,6 @@ $nav-border-color: #202020;
 
       &:hover {
         text-decoration: underline;
-      }
-    }
-  }
-
-  .login-cont {
-    position: absolute;
-    top: 60px;
-    right: -44px;
-    display: none;
-    width: 158px;
-    background-color: #2b2b2b;
-    box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.5);
-    border: {
-      width: 0 1px 1px;
-      color: $nav-border-color;
-      style: solid;
-      radius: 4px;
-    }
-
-    .arrow {
-      position: absolute;
-      top: -13px;
-      left: 50%;
-      transform: translateX(-50%);
-      border: {
-        width: 7px 6px;
-        color: transparent transparent #2b2b2b transparent;
-        style: solid;
       }
     }
   }

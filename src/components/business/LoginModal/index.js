@@ -22,7 +22,7 @@ class LoginModal extends Component {
 
   static defaultProps = {
     visible: false,
-    mode: LOGIN_MODE.GUIDE.TYPE
+    mode: LOGIN_MODE.MOBILE.TYPE
   }
 
   constructor(props) {
@@ -120,15 +120,15 @@ class LoginModal extends Component {
       <Modal {...this.props} title={this.getTitle(mode)}>
         <div className={styles.cont}>
           {this.getRenderMode(mode)}
-          {this.getRenderModeTip(mode)}
-          {mode === LOGIN_MODE.GUIDE.TYPE ? (
-            <div className={styles['scan-guide']} title="扫码登录">
-              <QrCodeScannerIcon
-                className={styles['scan-guide-icon']}
-                onClick={() => this.changeMode(LOGIN_MODE.CODE.TYPE)}
-              />
-            </div>
-          ) : null}
+          {/*{this.getRenderModeTip(mode)}*/}
+          {/*{mode === LOGIN_MODE.GUIDE.TYPE ? (*/}
+          {/*  <div className={styles['scan-guide']} title="扫码登录">*/}
+          {/*    <QrCodeScannerIcon*/}
+          {/*      className={styles['scan-guide-icon']}*/}
+          {/*      onClick={() => this.changeMode(LOGIN_MODE.CODE.TYPE)}*/}
+          {/*    />*/}
+          {/*  </div>*/}
+          {/*) : null}*/}
         </div>
       </Modal>
     )

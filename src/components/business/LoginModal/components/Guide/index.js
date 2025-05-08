@@ -1,7 +1,8 @@
 import { Component } from 'react'
 import PropTypes from 'prop-types'
 import { LOGIN_MODE } from 'constants/login'
-import styles from '../../index.scss'
+import styles from './index.scss'
+import loginStyles from '../../index.scss'
 
 export default class Guide extends Component {
   static propTypes = {
@@ -30,14 +31,14 @@ export default class Guide extends Component {
           <div className={styles['login-guide-platform']} />
           <a
             href={null}
-            className={styles['login-btn']}
+            className={loginStyles['login-btn']}
             onClick={() => this.changeMode(LOGIN_MODE.MOBILE.TYPE)}
           >
             手机号登录
           </a>
           <a
             href={null}
-            className={styles['sign-up-btn']}
+            className={loginStyles['sign-up-btn']}
             onClick={() => this.changeMode(LOGIN_MODE.SIGN_UP.TYPE)}
           >
             注册

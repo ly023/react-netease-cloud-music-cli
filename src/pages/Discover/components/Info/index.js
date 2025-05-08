@@ -110,11 +110,11 @@ function Info() {
             >
               <span>已签到</span>
               <div
-                className={`point-popover ${signInSuccess ? styles.fade : ''}`}
+                className={`${styles['point-popover']} ${signInSuccess ? styles.fade : ''}`}
               >
                 <span className={styles['point-popover-arrow']} />
                 <div>
-                  获得{' '}
+                  获得
                   <span className={styles.point}>{detail?.signInPoint}</span>
                   积分
                 </div>
@@ -156,7 +156,7 @@ function Info() {
   ) : (
     <div className={styles['sign-in']}>
       <p className={styles['sign-in-text']}>
-        登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机
+        登录云音乐，可以享受无限收藏的乐趣，并且无限同步到手机
       </p>
       <a href={null} onClick={handleLogin} className={styles['sign-in-btn']}>
         用户登录

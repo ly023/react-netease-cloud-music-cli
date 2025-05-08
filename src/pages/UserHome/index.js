@@ -322,7 +322,7 @@ function UserHome(props) {
               <RankingList
                 userId={userId}
                 listenSongs={userDetail?.listenSongs}
-                limit={10}
+                limit={20}
               />
             </div>
           ) : null}

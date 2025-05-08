@@ -154,14 +154,14 @@ function ScanQRCode({ changeMode, afterLogin }) {
   return (
     <div className={styles['login-code']}>
       {renderContent()}
-      <div>
-        <button
-          className={styles['change-mode']}
-          onClick={() => changeMode(LOGIN_MODE.GUIDE.TYPE)}
-        >
-          选择其他登录模式
-        </button>
-      </div>
+      {/*<div>*/}
+      {/*  <button*/}
+      {/*    className={styles['change-mode']}*/}
+      {/*    onClick={() => changeMode(LOGIN_MODE.GUIDE.TYPE)}*/}
+      {/*  >*/}
+      {/*    选择其他登录模式*/}
+      {/*  </button>*/}
+      {/*</div>*/}
       <Toaster />
     </div>
   )

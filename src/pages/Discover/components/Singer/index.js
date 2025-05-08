@@ -11,7 +11,7 @@ function Singer() {
 
   useEffect(() => {
     const fetchArtist = async () => {
-      const params = { limit: 8 }
+      const params = { limit: 10 }
       const res = await requestTopArtist(params)
       if (isMounted.current) {
         setArtists(res.artists)

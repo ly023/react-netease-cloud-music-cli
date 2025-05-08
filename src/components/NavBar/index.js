@@ -32,7 +32,7 @@ export default class NavBar extends Component {
     this.state = {
       style: {},
       loginVisible: false,
-      loginMode: LOGIN_MODE.GUIDE.TYPE
+      loginMode: LOGIN_MODE.CODE.TYPE
     }
     this.navRef = createRef()
   }
@@ -171,7 +171,7 @@ export default class NavBar extends Component {
           <div className={styles.wrapper} ref={this.navRef}>
             <div className={styles.cont}>
               <Link to="/" className={styles.logo}>
-                <span className={styles['logo-text']}>网易云音乐</span>
+                <span className={styles['logo-text']}>云音乐</span>
               </Link>
               <ul className={styles['link-list']}>
                 <li className={styles['link-item']}>
@@ -199,15 +199,6 @@ export default class NavBar extends Component {
                     activeClassName={styles['link-active']}
                   >
                     关注
-                  </NavLink>
-                </li>
-                <li className={styles['link-item']}>
-                  <NavLink
-                    to="/download"
-                    className={styles.link}
-                    activeClassName={styles['link-active']}
-                  >
-                    下载客户端
                   </NavLink>
                 </li>
               </ul>
@@ -276,38 +267,10 @@ export default class NavBar extends Component {
                 <div className={styles.login}>
                   <span
                     className={`link ${styles['login-status']} ${styles['login-text']}`}
-                    onClick={() => this.handleLogin(LOGIN_MODE.GUIDE.TYPE)}
+                    onClick={() => this.handleLogin(LOGIN_MODE.CODE.TYPE)}
                   >
                     登录
                   </span>
-                  <div className={styles['login-cont']}>
-                    <i className={styles.arrow} />
-                    <ul className={styles['login-list']}>
-                      <li
-                        className={styles['login-item']}
-                        onClick={() => this.handleLogin(LOGIN_MODE.MOBILE.TYPE)}
-                      >
-                        手机号登录
-                      </li>
-                      <li className={styles['login-item']}>
-                        <a href={null}>微信登录</a>
-                      </li>
-                      <li className={styles['login-item']}>
-                        <a href={null}>QQ登录</a>
-                      </li>
-                      <li className={styles['login-item']}>
-                        <a href={null}>新浪微博登录</a>
-                      </li>
-                      <li
-                        className={styles['login-item']}
-                        onClick={() =>
-                          this.handleLogin(LOGIN_MODE.EMAIL163.TYPE)
-                        }
-                      >
-                        网易邮箱账号登录
-                      </li>
-                    </ul>
-                  </div>
                 </div>
               )}
               <SearchBar />

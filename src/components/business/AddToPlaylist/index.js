@@ -87,11 +87,16 @@ function AddToPlaylist(props) {
         pid: playlistId,
         tracks: songIds.join(',')
       })
-        .then(() => {
-          if (isMounted.current) {
-            handleCancel()
-            handleCreateModalCancel()
-            toast.success('收藏成功')
+        .then(({ body }) => {
+          const code = body?.code
+          if (code === 200) {
+            if (isMounted.current) {
+              handleCancel()
+              handleCreateModalCancel()
+              toast.success('收藏成功')
+            }
+          } else {
+            toast.error(body?.message || getErrorMessage(code))
           }
         })
         .catch((err) => {
